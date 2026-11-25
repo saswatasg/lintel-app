@@ -1,24 +1,34 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lintel Privacy Policy</title><link rel="icon" href="icon.png"><link rel="stylesheet" href="style.css"></head><body><main>
 <nav><a href="./">Lintel</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a></nav>
-<h1>Privacy Policy</h1><p class="muted">Last updated 23 November 2026</p>
-<div class="card"><b>In short:</b> Lintel does not collect, sell or share any personal data. It has no accounts, no analytics, no advertising and no tracking. What it shows is processed on your Mac.</div>
+<h1>Privacy Policy</h1><p class="muted">Last updated 25 November 2026</p>
+<div class="card"><b>In short:</b> Lintel does not collect, sell or share any personal data. It has no accounts, no analytics, no advertising and no tracking. What it hears, reads and shows is processed on your Mac, including speech recognition and AI summaries.</div>
 <h2>Data that stays on your Mac</h2>
 <ul>
-<li><b>Clipboard history, notes, teleprompter scripts and shelf items</b> are stored only in Lintel's folder on your Mac. You can pause or clear clipboard history at any time; copies marked as passwords by password managers are never recorded.</li>
-<li><b>Calendar</b>: with your permission, Lintel reads upcoming events from the Calendar app to show your next meeting. Events are not stored or sent anywhere.</li>
+<li><b>Clipboard history, notes, teleprompter scripts, shelf items and focus sessions</b> are stored only in Lintel's folder on your Mac. You can pause or clear clipboard history at any time; copies marked as passwords by password managers are never recorded.</li>
+<li><b>Microphone and speech recognition</b>: used only while you dictate with voice typing, while a meeting transcript you started is running, or when the teleprompter follows your voice. Speech is turned into text on your Mac, by Apple's speech models and by the language models Lintel downloads. Audio is never saved or sent. During a meeting transcript, the last few minutes of audio are kept in memory to improve the text, then discarded.</li>
+<li><b>Audio from other apps</b>: Lintel reads app audio to set each app's volume and, when you transcribe a meeting, to hear the other side of the call. Nothing is recorded; a meeting transcript keeps only the text.</li>
+<li><b>Meeting transcripts and summaries</b> are saved as text in Lintel's folder, or in a folder you choose. If you choose a folder that a service like iCloud Drive syncs, that service syncs it, not Lintel.</li>
+<li><b>Apple Intelligence</b>: meeting summaries and dictation clean-up use Apple's on-device model.</li>
+<li><b>Calendar and Reminders</b>: with your permission, Lintel reads upcoming events to show your next meeting, and keeps your todos in the Reminders app (which syncs them through your Apple Account if you use iCloud). Lintel doesn't store or send your events.</li>
+<li><b>Keyboard and Accessibility</b>: with your permission, Lintel watches only for its own shortcuts (like the key you hold to dictate) and the volume and brightness keys, and uses Accessibility to paste your dictated text where you're typing. It doesn't record what you type.</li>
+<li><b>Browser tabs</b>: if you turn it on, Lintel checks which website is open in your browser, to notice distracting sites during a focus session and to spot calls like Google Meet. Addresses are never stored or sent.</li>
+<li><b>AI tool usage</b>: Lintel reads token counts from Claude Code and Codex logs on your Mac to show your usage. Their content isn't stored or sent.</li>
 <li><b>Camera</b>: used only while the Mirror tab is open, to show your own preview. Video is never recorded or transmitted.</li>
-<li><b>Microphone and speech recognition</b>: used only when you turn on the teleprompter's “Follow voice” mode. Speech is recognised on your Mac; audio is never stored or sent.</li>
 <li><b>Music and Spotify</b>: with your permission, Lintel reads what's playing and sends play, pause and skip commands.</li>
 </ul>
 <h2>Network connections</h2>
-<p>Lintel connects to the internet only to fetch things you asked to see:</p>
+<p>Lintel connects to the internet only for the things below. Each connection goes straight from your Mac to the service named, never to the developer:</p>
 <ul>
-<li>album artwork for the song playing in Spotify;</li>
-<li>icons for websites you add to the Launcher;</li>
-<li>if you choose to connect them, your own AI-tool plan usage from the provider you signed in to, and your Google Calendar events if you sign in to Google directly. Sign-in tokens are kept only on your Mac and are used only to show you that information.</li>
+<li><b>Speech and language models</b>: Apple's speech models download from Apple. The optional Hindi, Bengali and English language models download from Hugging Face (huggingface.co) when you choose to add them.</li>
+<li><b>Website icons</b> for sites in your Launcher and on your focus block list, fetched from those websites. Meldstead, the developer's own web app, is in the Launcher by default (you can remove it), so its icon is fetched from meldstead.com in the same way. Nothing else is sent with it.</li>
+<li><b>Album artwork</b> for the song playing in Spotify.</li>
+<li><b>If you choose to connect them</b>: your own AI tool plan usage from the provider you signed in to, and your Google Calendar events if you sign in to Google. Sign-in tokens are kept only on your Mac and are used only to show you that information.</li>
+<li><b>Subscriptions</b> are handled by the App Store. Lintel only learns which plan is active; Apple's privacy policy covers payment.</li>
 </ul>
-<p>Lintel sends no information about you or your use of the app to the developer or to any third party.</p>
+<p>As with any download, these services see your Mac's IP address and what was requested, under their own privacy policies. Lintel sends no information about you or your use of the app to the developer or to any third party: no analytics, no crash reports and no advertising.</p>
+<h2>Google Calendar</h2>
+<p>If you sign in to Google in Lintel, it asks for read-only access to your calendars and for your email address. Lintel uses them only to show your upcoming events in the notch and which account is connected. Events go straight from Google to your Mac and are not stored, shared or used for anything else. The sign-in token is kept only on your Mac, and signing out deletes it. Lintel's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
 <h2>Children</h2><p>Lintel does not knowingly collect information from anyone, including children.</p>
 <h2>Changes</h2><p>If this policy changes, the new version will be posted on this page with a new date.</p>
 <h2>Contact</h2><p>Questions about privacy: open an issue at <a href="https://github.com/saswatasg/lintel-app/issues">github.com/saswatasg/lintel-app/issues</a>.</p>
