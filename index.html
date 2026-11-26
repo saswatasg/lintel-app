@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lintel: voice typing, meeting notes, a teleprompter and focus in your Mac's notch</title>
-<meta name="description" content="Lintel turns your Mac's notch into voice typing in English, Hindi and Bengali, meeting notes for both sides of any call, a teleprompter under the camera and focus that blocks distractions. All on your Mac.">
-<meta name="theme-color" content="#06050b">
+<meta name="description" content="Lintel turns your Mac's notch into voice typing in English, Hindi and Bengali, notes from every meeting, a teleprompter under your camera and focus that blocks distractions. Private and on your Mac. 7-day free trial.">
+<meta name="theme-color" content="#07070b">
 <meta property="og:title" content="Lintel: your notch, put to work">
-<meta property="og:description" content="Voice typing in English, Hindi and Bengali. Every meeting written down. Your script under the camera. Focus that actually blocks. All on your Mac.">
+<meta property="og:description" content="Voice typing in English, Hindi and Bengali. Notes from every meeting. A teleprompter under your camera. Focus that blocks distractions. All on your Mac.">
 <meta property="og:image" content="https://lintel.saswatasg.com/shots/01-notch.jpg">
 <meta property="og:url" content="https://lintel.saswatasg.com/">
 <meta name="twitter:card" content="summary_large_image">
@@ -17,430 +17,656 @@
 <link rel="stylesheet" href="home.css">
 </head>
 <body>
-<div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
-<div class="grain" aria-hidden="true"></div>
+<!-- Icons: Lucide (lucide.dev), ISC License, Copyright (c) Lucide Contributors -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+<symbol id="i-audio-lines" viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></symbol>
+<symbol id="i-list-checks" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+<symbol id="i-clipboard" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></symbol>
+<symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></symbol>
+<symbol id="i-languages" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol>
+<symbol id="i-scroll-text" viewBox="0 0 24 24"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></symbol>
+<symbol id="i-sprout" viewBox="0 0 24 24"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+<symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+<symbol id="i-cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></symbol>
+<symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+<symbol id="i-keyboard" viewBox="0 0 24 24"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></symbol>
+<symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+<symbol id="i-app-window" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></symbol>
+<symbol id="i-bell-ring" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/><path d="M22 8c0-2.3-.8-4.3-2-6"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-battery-charging" viewBox="0 0 24 24"><path d="M15 7h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><path d="M6 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1"/><path d="m11 7-3 5h4l-3 5"/><line x1="22" x2="22" y1="11" y2="13"/></symbol>
+<symbol id="i-cloud-off" viewBox="0 0 24 24"><path d="m2 2 20 20"/><path d="M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193"/><path d="M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7.008 7.008 0 0 0 10 5.07"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+<symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol>
+<symbol id="i-skip-back" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" x2="5" y1="19" y2="5"/></symbol>
+<symbol id="i-skip-forward" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" x2="19" y1="5" y2="19"/></symbol>
+<symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-wifi" viewBox="0 0 24 24"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></symbol>
+<symbol id="i-battery-full" viewBox="0 0 24 24"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/><line x1="6" x2="6" y1="11" y2="13"/><line x1="10" x2="10" y1="11" y2="13"/><line x1="14" x2="14" y1="11" y2="13"/></symbol>
+<symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+<symbol id="i-square-pen" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></symbol>
+<symbol id="i-circle-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></symbol>
+<symbol id="i-pointer" viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/></symbol>
+</defs></svg>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
-    <symbol id="i-wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h1M7 8v8M11 4v16M15 8v8M19 10v4"/></symbol>
-    <symbol id="i-lines" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M6 10h12M4 14h16M7 18h10"/></symbol>
-    <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c0-9 5-15 15-15 0 10-6 15-13 15"/><path d="M5 20l9-9"/></symbol>
-    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></symbol>
-    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.5 3.5 3.5 14.5 0 18M12 3c-3.5 3.5-3.5 14.5 0 18"/></symbol>
-    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
-    <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8" r="1.2"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
-    <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
-    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
-    <symbol id="i-cloudoff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4 1.5A3.5 3.5 0 0 0 7 18z"/><path d="M4 4l16 16"/></symbol>
-    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></symbol>
-    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></symbol>
-    <symbol id="i-prev" viewBox="0 0 24 24"><path d="M11.5 6L4 12l7.5 6zM20 6l-7.5 6 7.5 6z" fill="currentColor"/></symbol>
-    <symbol id="i-next" viewBox="0 0 24 24"><path d="M12.5 6L20 12l-7.5 6zM4 6l7.5 6L4 18z" fill="currentColor"/></symbol>
-    <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
-    <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
-    <symbol id="i-keyboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/></symbol>
-    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v14H8a3 3 0 0 1-3-3z"/><path d="M5 18a3 3 0 0 1 3-3h11"/></symbol>
-    <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21a2 2 0 0 0 4 0"/></symbol>
-    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></symbol>
-    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.3a5 5 0 0 1 5 4.7"/></symbol>
-    <symbol id="i-eyeoff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l18 18"/><path d="M10.6 6.1A9.8 9.8 0 0 1 12 6c5 0 8.5 4 9.5 6a13 13 0 0 1-3 3.6M6.6 7.6A13 13 0 0 0 2.5 12c1 2 4.5 6 9.5 6a9.6 9.6 0 0 0 4.2-1"/></symbol>
-    <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></symbol>
-    <symbol id="i-battery" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 11v2" stroke-linecap="round"/><rect x="5" y="10" width="10" height="4" rx="1" fill="currentColor" stroke="none"/></symbol>
-    <symbol id="i-timer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M10 3h4"/></symbol>
-    <symbol id="i-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10l5-3v10l-5-3"/></symbol>
-    <symbol id="i-bot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01"/></symbol>
-  </defs>
-</svg>
+<div class="glow" aria-hidden="true"></div>
 
-<!-- The top of this page is a Mac menu bar, and its notch is Lintel. -->
-<header class="menubar">
-  <nav class="mb-left" aria-label="Main">
-    <a class="mb-brand" href="#top" aria-label="Lintel"><img src="icon.png" alt=""><span class="mb-name">Lintel</span></a>
-    <span class="mb-links"><a href="#voice">Voice typing</a><a href="#meetings">Meetings</a><a href="#prompter">Teleprompter</a><a href="#focus">Focus</a><a href="#plans">Plans</a></span>
-  </nav>
-  <div class="mb-right"><a class="mb-cta" href="#plans">Get Lintel</a><span class="mb-clock" id="clock"></span></div>
-</header>
-
-<div id="island" aria-hidden="true">
-  <div class="stage" id="stage">
-    <div class="view" data-v="notch" data-w="188" data-h="34"></div>
-
-    <div class="view v-voice" data-v="voice" data-w="440" data-h="60">
-      <div class="row"><svg class="mic"><use href="#i-mic"/></svg><span class="timer" id="ivT">0:00</span></div>
-      <div class="wave" id="ivW"></div>
-    </div>
-
-    <div class="view v-copied" data-v="copied" data-w="360" data-h="54"><span class="tick">✓</span>Copied · <kbd>⌘V</kbd> to paste</div>
-
-    <div class="view v-meeting" data-v="meeting" data-w="600" data-h="206">
-      <div class="row" style="justify-content:space-between">
-        <div class="row eyebrow" style="color:var(--red);gap:8px;font-size:12px"><span class="dot"></span>Transcribing<span style="color:var(--ink3);letter-spacing:0;text-transform:none;font-weight:600">· Zoom</span></div>
-        <span class="timer" style="font-size:14px;color:var(--ink3)" id="imT">0:42</span>
-      </div>
-      <div class="t">Design review</div>
-      <div class="ln"><b class="them">THEM</b>Haan, aur final deadline bhi decide karni hai.</div>
-      <div class="ln" id="imRef"><b class="them">THEM</b><span>Aami report ta Friday er modhye pathiye debo.</span></div>
-      <div class="ln"><b class="me">ME</b>Perfect, let's lock it today.</div>
-    </div>
-
-    <div class="view v-prompter" data-v="prompter" data-w="600" data-h="168">
-      <div class="cam"></div>
-      <div class="scroll"><div class="txt" id="ipTxt"><div>Hi everyone, thanks for joining.</div><div>Today I want to show you how</div><div>the notch on your Mac became</div><div>the most useful spot on screen.</div><div>Keep your eyes right here,</div><div>just under the camera.</div><div>Nobody on the call sees this.</div></div></div>
-    </div>
-
-    <div class="view v-focus" data-v="focus" data-w="560" data-h="176">
-      <div class="cellbox">
-        <div class="ring" style="width:120px;height:120px"><svg viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="45" fill="none" stroke-width="7"/><circle class="fg" id="ifRing" cx="50" cy="50" r="45" fill="none" stroke-width="7" stroke-dasharray="282.7" stroke-dashoffset="100"/></svg>
-          <div class="tree"><svg class="tr" data-stage="3" viewBox="0 0 64 64" style="width:62px;height:62px;transform:none"><ellipse cx="32" cy="58" rx="15" ry="3.5" fill="#4a3426"/><rect class="trunk" x="30" y="30" width="4" height="28" rx="2" fill="#9a6a48"/><circle class="leaf l1" cx="32" cy="30" r="8" fill="#2fb350"/><circle class="leaf l2" cx="24" cy="25" r="9" fill="#34c759"/><circle class="leaf l3" cx="40" cy="23" r="10" fill="#3fd46a"/><circle class="leaf l4" cx="32" cy="15" r="11" fill="#4ade80"/></svg></div>
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="Lintel home"><img src="icon.png" alt="" width="30" height="30"><span>Lintel</span></a>
+    <nav class="links" aria-label="Main">
+      <div class="dd" id="dd">
+        <button class="dd-btn" aria-expanded="false" aria-controls="ddPanel">Features <svg class="ic"><use href="#i-chevron-down"/></svg></button>
+        <div class="dd-panel" id="ddPanel">
+          <div class="dd-grid">
+            <a href="#voice"><span class="tile" style="--c:var(--accent2)"><svg class="ic"><use href="#i-mic"/></svg></span><span><b>Voice typing</b><span>Speak into any app, in three languages</span></span></a>
+            <a href="#meetings"><span class="tile" style="--c:var(--them)"><svg class="ic"><use href="#i-audio-lines"/></svg></span><span><b>Meeting notes</b><span>Both sides of every call, written down</span></span></a>
+            <a href="#prompter"><span class="tile" style="--c:var(--amber)"><svg class="ic"><use href="#i-scroll-text"/></svg></span><span><b>Teleprompter</b><span>Your script right under the camera</span></span></a>
+            <a href="#focus"><span class="tile" style="--c:var(--green)"><svg class="ic"><use href="#i-sprout"/></svg></span><span><b>Focus</b><span>Block distractions while a tree grows</span></span></a>
+            <a href="#languages"><span class="tile" style="--c:var(--pink)"><svg class="ic"><use href="#i-languages"/></svg></span><span><b>Hindi and Bengali</b><span>Mixed languages, each in its own script</span></span></a>
+            <a href="#everything"><span class="tile" style="--c:var(--hi)"><svg class="ic"><use href="#i-layout-grid"/></svg></span><span><b>Everything else</b><span>Clipboard, calendar, music and more</span></span></a>
+          </div>
+          <a class="dd-foot" href="#privacy"><svg class="ic"><use href="#i-shield-check"/></svg>Private by design: what Lintel hears stays on your Mac.</a>
         </div>
-        <div><div class="eyebrow" style="color:var(--green);font-size:11px">Growing</div><div class="hm-big" id="ifT">31:51</div><div class="hm-sub">Deep work · Record the walkthrough</div></div>
       </div>
+      <a href="#how">How it works</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn sm primary" data-cta href="#pricing"><span data-cta-short>Get Lintel</span></a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg class="ic"><use href="#i-menu"/></svg></button>
     </div>
-
-    <div class="view v-home" data-v="home" data-w="660" data-h="206">
-      <div class="cellbox hm-music">
-        <div class="hm-h">Music <span class="eqz"><b></b><b></b><b></b></span></div>
-        <div class="row" style="gap:14px"><div class="hm-art"></div><div><b class="hm-title">Golden Hour</b><div class="hm-sub">Lumen Drift</div></div></div>
-        <div class="prog" style="margin-top:16px"><i id="ihProg" style="width:38%;background:#ff7a59"></i></div>
-      </div>
-      <div class="cellbox">
-        <div class="hm-h">Next up <span>Today</span></div>
-        <div class="next"><div class="in" id="ihIn">IN 14M</div><div class="ev" style="margin:6px 0 10px"><b style="font-size:17px">Design review</b><span>7:10 PM – 7:55 PM</span></div><span class="join"><svg width="14" height="14"><use href="#i-video"/></svg>Join</span></div>
-      </div>
-    </div>
-
-    <div class="view v-section" data-v="section" data-w="260" data-h="38"><svg class="ic"><use id="isIc" href="#i-mic"/></svg><span id="isTx">Voice typing</span><div class="prog"><i id="isPr"></i></div></div>
-
-    <div class="view v-menu" data-v="menu" data-w="560" data-h="94">
-      <div class="tabs">
-        <a href="#voice"><svg><use href="#i-mic"/></svg>Voice</a>
-        <a href="#languages"><svg><use href="#i-globe"/></svg>Languages</a>
-        <a href="#meetings"><svg><use href="#i-wave"/></svg>Meetings</a>
-        <a href="#prompter"><svg><use href="#i-lines"/></svg>Prompter</a>
-        <a href="#focus"><svg><use href="#i-leaf"/></svg>Focus</a>
-        <a href="#everything"><svg><use href="#i-grid"/></svg>Everything</a>
-        <a href="#plans"><svg><use href="#i-tag"/></svg>Plans</a>
-      </div>
-    </div>
-
-    <div class="view v-activity" data-v="activity" data-w="330" data-h="40"><span class="row" style="gap:8px" id="iaL"></span><span id="iaR" style="font-variant-numeric:tabular-nums;color:var(--ink2)"></span></div>
   </div>
-</div>
+  <div class="sheet" id="sheet">
+    <h6>Features</h6>
+    <a href="#voice"><svg class="ic"><use href="#i-mic"/></svg>Voice typing</a>
+    <a href="#meetings"><svg class="ic"><use href="#i-audio-lines"/></svg>Meeting notes</a>
+    <a href="#prompter"><svg class="ic"><use href="#i-scroll-text"/></svg>Teleprompter</a>
+    <a href="#focus"><svg class="ic"><use href="#i-sprout"/></svg>Focus</a>
+    <a href="#languages"><svg class="ic"><use href="#i-languages"/></svg>Hindi and Bengali</a>
+    <a href="#everything"><svg class="ic"><use href="#i-layout-grid"/></svg>Everything else</a>
+    <h6>Lintel</h6>
+    <a href="#how"><svg class="ic"><use href="#i-circle-play"/></svg>How it works</a>
+    <a href="#privacy"><svg class="ic"><use href="#i-shield-check"/></svg>Privacy</a>
+    <a href="#pricing"><svg class="ic"><use href="#i-calendar"/></svg>Pricing</a>
+    <a href="#faq"><svg class="ic"><use href="#i-message"/></svg>FAQ</a>
+    <a class="btn primary lg" data-cta href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a>
+  </div>
+</header>
 
 <main id="top">
 
 <!-- ================= HERO ================= -->
-<section class="hero" id="hero">
-  <div class="caption" id="caption"></div>
-  <h1 class="rise"><span class="w"><span class="grad">Your notch,</span></span><br><span class="w"><span style="transition-delay:.12s">put to work.</span></span></h1>
-  <p class="sub" data-reveal>Speak and it writes, in English, Hindi or Bengali. Every meeting written down. Your script right under the camera. Distractions blocked while you work. All in the notch, all on your Mac.</p>
-  <div class="ctas" data-reveal>
-    <a class="btn primary" href="#plans"><span class="two"><small>COMING SOON TO THE</small>Mac App Store</span></a>
-    <a class="btn ghost" href="#voice">See it work</a>
+<section class="hero">
+  <a class="badge" href="#languages"><span class="new">New</span>Voice typing in Hindi and Bengali<svg class="ic"><use href="#i-arrow-right"/></svg></a>
+  <h1>Your notch,<br><span class="grad">put to work.</span></h1>
+  <p class="sub">Voice typing in English, Hindi and Bengali. Notes from every meeting. A teleprompter under your camera. Focus that blocks distractions. All in your Mac's notch, and all on your Mac.</p>
+  <div class="ctas">
+    <a class="btn primary lg" data-cta href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a>
+    <a class="btn ghost lg" href="#demo" id="watch"><svg class="ic"><use href="#i-circle-play"/></svg>Watch the demo</a>
   </div>
-  <div class="chips" id="chips" data-reveal>
-    <button class="chip" data-scene="0" style="--c:var(--accent)"><svg><use href="#i-mic"/></svg>Voice typing<i class="fill"></i></button>
-    <button class="chip" data-scene="1" style="--c:var(--them)"><svg><use href="#i-wave"/></svg>Meeting notes<i class="fill"></i></button>
-    <button class="chip" data-scene="2" style="--c:var(--amber)"><svg><use href="#i-lines"/></svg>Teleprompter<i class="fill"></i></button>
-    <button class="chip" data-scene="3" style="--c:var(--green)"><svg><use href="#i-leaf"/></svg>Focus<i class="fill"></i></button>
-    <button class="chip" data-scene="4" style="--c:var(--pink)"><svg><use href="#i-grid"/></svg>Everything else<i class="fill"></i></button>
+  <ul class="trust">
+    <li><svg class="ic"><use href="#i-check"/></svg>7 days free, every feature</li>
+    <li><svg class="ic"><use href="#i-check"/></svg>No account needed</li>
+    <li><svg class="ic"><use href="#i-check"/></svg>Your voice stays on your Mac</li>
+  </ul>
+
+  <div class="stage" id="demo">
+    <div class="device" id="device" aria-label="Interactive demo of Lintel in a Mac's notch">
+      <div class="canvas" id="canvas">
+        <div class="bezel"></div>
+        <div class="screen">
+          <div class="wall"></div>
+          <div class="mbar"><b>Finder</b><span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Window</span><span>Help</span>
+            <span class="r"><svg class="ic"><use href="#i-wifi"/></svg><svg class="ic"><use href="#i-battery-full"/></svg><span id="dClock">Thu 26 Nov 9:41</span></span></div>
+
+          <div class="dfiles" aria-hidden="true">
+            <div><i><svg class="ic"><use href="#i-folder"/></svg></i>Projects</div>
+            <div><i><svg class="ic"><use href="#i-folder"/></svg></i>Screenshots</div>
+            <div><i class="doc">PDF</i>Q4 roadmap</div>
+          </div>
+          <!-- desktop windows -->
+          <div class="win" id="wMail" style="left:330px;top:250px;width:540px;height:340px">
+            <div class="tbar"><i></i><i></i><i></i><span>New Message</span></div>
+            <div class="wm-f"><em>To:</em>Maya Chen</div>
+            <div class="wm-f"><em>Subject:</em>Design review</div>
+            <div class="wm-b" id="dMailBody"><span class="ph">Write your message…</span></div>
+          </div>
+          <div class="win dark" id="wCall" style="left:300px;top:300px;width:600px;height:360px">
+            <div class="tbar"><i></i><i></i><i></i><span>Zoom Meeting · Design review</span></div>
+            <div class="call-tiles">
+              <div class="ct" id="dThem" style="--ring:var(--them)"><div class="av" style="background:linear-gradient(135deg,#4fd1c5,#2b6c9a)">A</div><span class="nm">Ankita</span><div class="bars"><b></b><b></b><b></b></div></div>
+              <div class="ct" id="dMe" style="--ring:var(--accent)"><div class="av" style="background:linear-gradient(135deg,#a597ff,#5b3df5)">S</div><span class="nm">You</span><span class="rec"><span class="dot"></span>REC</span><div class="bars"><b></b><b></b><b></b></div></div>
+            </div>
+            <div class="cbar"><i></i><i></i><i></i></div>
+          </div>
+          <div class="win" id="wBrowser" style="left:300px;top:300px;width:600px;height:360px">
+            <div class="tbar"><i></i><i></i><i></i><span>Videos</span></div>
+            <div class="bz-tabs"><b>Docs</b><b class="on">Videos</b><b>Feed</b></div>
+            <div class="blockpage">
+              <div class="appi"><span><svg class="ic"><use href="#i-leaf"/></svg></span></div>
+              <h4>Videos can wait</h4><p>It's on your Grove block list.</p>
+              <div class="left">Deep work <span style="float:right;color:#5b7363" id="dLeft">31:50 left</span><div class="bar"><i id="dLeftBar"></i></div></div>
+            </div>
+          </div>
+          <div class="win" id="wNotes" style="left:390px;top:330px;width:440px;height:300px">
+            <div class="tbar"><i></i><i></i><i></i><span>Notes</span></div>
+            <div class="notes"><div class="sb"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+              <div class="tx"><b>Studio visit</b><span class="sel" id="dSel">Studio address: 18 Harbour Lane, 2nd floor</span>. Bring the updated flows and the beta build.</div></div>
+          </div>
+
+          <div class="say" id="dSay"><small><svg class="ic"><use href="#i-mic"/></svg>You say</small><span id="dSayT"></span></div>
+          <div class="keys" id="dKeys" style="left:640px;top:520px"><b>⌘</b><b>V</b></div>
+
+          <div class="dock">
+            <i style="background:linear-gradient(#5aa9ff,#1f6fe0)"><svg class="ic"><use href="#i-folder"/></svg></i>
+            <i style="background:linear-gradient(#61b6ff,#2b7bf0)"><svg class="ic"><use href="#i-mail"/></svg></i>
+            <i style="background:linear-gradient(#ffffff,#e9e9ee);color:#e5484d"><svg class="ic"><use href="#i-calendar"/></svg></i>
+            <i style="background:linear-gradient(#6fe07a,#28b54a)"><svg class="ic"><use href="#i-message"/></svg></i>
+            <i style="background:linear-gradient(#ffe27a,#f4b81c);color:#5b4300"><svg class="ic"><use href="#i-file-text"/></svg></i>
+            <i style="background:linear-gradient(#ff7a95,#f0325a)"><svg class="ic"><use href="#i-music"/></svg></i>
+            <i style="background:linear-gradient(#5b8cff,#2d5be3)"><svg class="ic"><use href="#i-video"/></svg></i>
+            <span class="sep"></span>
+            <img src="icon.png" alt="">
+            <i style="background:linear-gradient(#a3a3ad,#6d6d77)"><svg class="ic"><use href="#i-settings"/></svg></i>
+          </div>
+
+          <!-- Lintel's island -->
+          <div class="isl" id="isl">
+            <div class="L lt" id="Ltabs">
+              <div class="tb">
+                <div class="grp g1">
+                  <button data-tab="home" aria-label="Home"><svg class="ic"><use href="#i-house"/></svg></button>
+                  <button data-tab="meetings" aria-label="Meetings"><svg class="ic"><use href="#i-audio-lines"/></svg></button>
+                  <button data-tab="todos" aria-label="Todos"><svg class="ic"><use href="#i-list-checks"/></svg></button>
+                  <button data-tab="grove" aria-label="Grove focus"><svg class="ic"><use href="#i-leaf"/></svg></button>
+                </div>
+                <div class="grp g2">
+                  <button data-tab="usage" aria-label="AI limits"><svg class="ic"><use href="#i-gauge"/></svg></button>
+                  <button data-tab="clipboard" aria-label="Clipboard"><svg class="ic"><use href="#i-clipboard"/></svg></button>
+                  <button data-tab="apps" aria-label="Launcher"><svg class="ic"><use href="#i-layout-grid"/></svg></button>
+                  <button data-tab="shelf" aria-label="Shelf"><svg class="ic"><use href="#i-inbox"/></svg></button>
+                </div>
+                <span class="gear"><svg class="ic"><use href="#i-settings"/></svg></span>
+              </div>
+              <div class="ihd"><b id="iTitle">Home</b><span id="iSub">Thursday, 26 November</span><svg class="ic"><use href="#i-sliders"/></svg></div>
+              <div class="ibd">
+                <div class="pane" data-pane="home">
+                  <div class="cx"><div class="lab">Music <span class="eqz"><b></b><b></b><b></b></span></div>
+                    <div style="display:flex;gap:12px;align-items:center"><div class="p-art"></div><div><div class="p-t">Golden Hour</div><div class="p-s">Lumen Drift</div></div></div>
+                    <div class="pbar"><i id="pMusic"></i></div>
+                    <div class="mc"><svg class="ic"><use href="#i-skip-back"/></svg><span class="pp"><svg class="ic"><use href="#i-pause"/></svg></span><svg class="ic"><use href="#i-skip-forward"/></svg></div>
+                  </div>
+                  <div class="cx"><div class="lab">Next up <span>Today</span></div>
+                    <div class="nx-in" id="pNext">IN 14M</div>
+                    <div class="nx-ev"><b>Design review</b><span>7:10 PM – 7:55 PM</span></div>
+                    <span class="join"><svg class="ic"><use href="#i-video"/></svg>Join</span>
+                    <div class="nx-l"><i></i>9:10 PM · Lunch with Maya</div>
+                  </div>
+                  <div class="cx"><div class="lab">Voice typing</div>
+                    <div class="vt"><span class="mic"><svg class="ic"><use href="#i-mic"/></svg></span><div><b>Tap to talk</b><span>Or hold right ⌥ in any app</span></div></div>
+                    <div class="p-s" style="margin-top:16px;line-height:1.45">English, Hindi and Bengali, even in one sentence.</div>
+                  </div>
+                </div>
+                <div class="pane" data-pane="meetings">
+                  <div class="cx live" style="flex:1.15">
+                    <div class="top"><span class="dot"></span>TRANSCRIBING <span>· Zoom</span><em id="pMeetClock">0:42</em></div>
+                    <div class="t">Design review</div>
+                    <div class="ln"><b class="them">Them</b>So the beta goes out on Friday, right?</div>
+                    <div class="ln"><b class="me">Me</b>Haan, bas final testing baaki hai.</div>
+                    <div class="ln" id="pRef"><b class="them">Them</b><span>Aami report ta Friday er modhye pathiye debo.</span></div>
+                    <div class="act"><span class="chipx w"><i style="width:8px;height:8px;background:#000;border-radius:2px;display:inline-block"></i>Stop &amp; save</span><span class="chipx"><svg class="ic"><use href="#i-languages"/></svg>EN · HI · BN</span></div>
+                  </div>
+                  <div class="cx trl"><div class="lab">Transcripts 4 <span class="srch"><svg class="ic"><use href="#i-search"/></svg>Search</span></div>
+                    <div class="row"><div class="d"><b>25</b><span>NOV</span></div><div class="m"><b>Weekly product sync</b><span>Wed · 32m · Zoom</span></div><svg class="ic"><use href="#i-chevron-right"/></svg></div>
+                    <div class="row"><div class="d"><b>24</b><span>NOV</span></div><div class="m"><b>1:1 with Maya</b><span>Tue · 25m · FaceTime</span></div><svg class="ic"><use href="#i-chevron-right"/></svg></div>
+                    <div class="row"><div class="d"><b>20</b><span>NOV</span></div><div class="m"><b>Customer call: Harbour Studio</b><span>Fri · 48m · Teams</span></div><svg class="ic"><use href="#i-chevron-right"/></svg></div>
+                  </div>
+                </div>
+                <div class="pane" data-pane="todos">
+                  <div class="cx" style="flex:1.4"><div class="lab">Today 5 <svg class="ic"><use href="#i-plus"/></svg></div>
+                    <div class="td">
+                      <div style="--c:#5ac8fa" class="done"><i></i>Book the studio for Thursday</div>
+                      <div style="--c:#ffb340"><i></i>Pick up the dry cleaning<em class="late">Late</em></div>
+                      <div style="--c:#8b7bff"><i></i>Review App Store screenshots<em>2:30 PM</em></div>
+                      <div style="--c:#5ac8fa"><i></i>Send the deck to Ankita<em>4:15 PM</em></div>
+                      <div style="--c:#ff6fae"><i></i>Record the walkthrough<em>6:00 PM</em></div>
+                    </div>
+                  </div>
+                  <div class="cx"><div class="lab">Tomorrow</div>
+                    <div class="td"><div style="--c:#34c759"><i></i>Beta goes out</div><div style="--c:#8b7bff"><i></i>Update release notes</div><div style="--c:#ffb340"><i></i>Call the bank</div></div>
+                    <div class="p-s" style="position:absolute;left:14px;bottom:12px">Synced with Reminders</div>
+                  </div>
+                </div>
+                <div class="pane" data-pane="grove">
+                  <div class="cx"><div class="gr">
+                    <div class="ring"><svg class="r" viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="45" fill="none" stroke-width="6"/><circle class="fg" id="pRing" cx="50" cy="50" r="45" fill="none" stroke-width="6" stroke-dasharray="282.7" stroke-dashoffset="100"/></svg><div class="in" data-tree="3:56"></div></div>
+                    <div><div class="st">GROWING</div><div class="big" id="pGrove">31:50</div><div class="wt">Deep work · Record the walkthrough</div>
+                      <div class="bt"><span class="chipx w"><svg class="ic"><use href="#i-plus"/></svg>5 min</span><span class="chipx">Give up</span></div></div>
+                  </div></div>
+                  <div class="cx" style="flex:1.15"><div class="lab">Garden <span>Last 7 days</span></div>
+                    <div class="garden" data-garden="3,4,0,2,4,3,1"></div>
+                    <div class="stats3"><div>STREAK<b>7 days</b></div><div>7 DAYS<b>8h 50m</b></div><div>ALL TIME<b>13h 15m</b></div></div>
+                  </div>
+                </div>
+                <div class="pane" data-pane="usage">
+                  <div class="cx lim" style="justify-content:center">
+                    <div><div class="t">Claude<span>resets 3:40 PM</span></div><div class="b"><i style="width:62%;background:#d97757"></i></div></div>
+                    <div><div class="t">Codex<span>resets Friday</span></div><div class="b"><i style="width:81%;background:#8b7bff"></i></div></div>
+                    <div><div class="t">OpenCode Go<span>resets in 2h</span></div><div class="b"><i style="width:44%;background:#34c759"></i></div></div>
+                  </div>
+                  <div class="cx"><div class="lab">This week</div><div class="big" style="font-size:34px;font-weight:700;letter-spacing:-.02em">62%</div><div class="p-s">left on Claude, with a heads-up before you run out.</div></div>
+                </div>
+                <div class="pane" data-pane="clipboard">
+                  <div class="cx" style="display:flex;flex-direction:column">
+                    <div class="fil"><b class="on">All</b><b>Text</b><b>Links</b><b>Images</b><b>Files</b></div>
+                    <div class="cbx" id="pClip">
+                      <div class="cc"><div class="src"><i style="background:#ffd34d"></i>Notes<em><svg class="ic" style="width:11px;height:11px"><use href="#i-pin"/></svg> 1h</em></div><b>Wi-Fi: Harbour-Guest · lintel2026</b></div>
+                      <div class="cc"><div class="src"><i style="background:#34c759"></i>Messages<em>now</em></div><b>Can we move the design review to 3:30?</b></div>
+                      <div class="cc"><div class="src"><i style="background:#4c8dff"></i>Safari<em>5m</em></div><b><svg class="ic" style="width:12px;height:12px;vertical-align:-1px"><use href="#i-link"/></svg> developer.apple.com</b><div class="p-s" style="font-size:11px">design/human-interface…</div></div>
+                      <div class="cc"><div class="src"><i style="background:#7a7a85"></i>Terminal<em>15m</em></div><code>git push origin main</code></div>
+                      <div class="cc"><div class="src"><i style="background:#4c8dff"></i>Finder<em>1h</em></div><b>Q4 roadmap.pdf</b></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pane" data-pane="apps">
+                  <div class="cx"><div class="apps">
+                    <div><i style="background:linear-gradient(#61b6ff,#2b7bf0)"><svg class="ic"><use href="#i-mail"/></svg></i>Mail</div>
+                    <div><i style="background:linear-gradient(#fff,#e9e9ee);color:#e5484d"><svg class="ic"><use href="#i-calendar"/></svg></i>Calendar</div>
+                    <div><i style="background:linear-gradient(#ffe27a,#f4b81c);color:#5b4300"><svg class="ic"><use href="#i-file-text"/></svg></i>Notes</div>
+                    <div><i style="background:linear-gradient(#5aa9ff,#1f6fe0)"><svg class="ic"><use href="#i-folder"/></svg></i>Projects</div>
+                    <div><i style="background:linear-gradient(#8b7bff,#5b3df5)"><svg class="ic"><use href="#i-link"/></svg></i>lintel.app</div>
+                    <div><i style="background:linear-gradient(#ff7a95,#f0325a)"><svg class="ic"><use href="#i-music"/></svg></i>Music</div>
+                    <div><i style="background:linear-gradient(#4ade80,#16a34a)"><svg class="ic"><use href="#i-sprout"/></svg></i>Start focus</div>
+                  </div></div>
+                </div>
+                <div class="pane" data-pane="shelf">
+                  <div class="cx" style="display:flex"><div class="shelf">
+                    <div class="f"><i style="background:linear-gradient(#ff7a7a,#e5484d)">PDF</i>Q4 roadmap.pdf</div>
+                    <div class="f"><i style="background:linear-gradient(#7aa7ff,#2d5be3)">MOV</i>walkthrough.mov</div>
+                    <div class="f"><i style="background:linear-gradient(#5fd3a0,#1f9d6a)">PNG</i>notch-shot.png</div>
+                    <div class="p-s" style="max-width:150px">Drop files on the notch. Drag them out or AirDrop them later.</div>
+                  </div></div>
+                </div>
+              </div>
+            </div>
+            <div class="L lv" id="Lvoice"><span class="l"><svg class="ic"><use href="#i-mic"/></svg><span id="iVT">0:00</span></span><span class="wave" id="iWave"></span></div>
+            <div class="L lc" id="Lcopied"><span class="tk"><svg class="ic"><use href="#i-check"/></svg></span>Copied · <kbd>⌘V</kbd> to paste</div>
+            <div class="L lp" id="Lprompt">
+              <div class="top"><span><i class="spin"></i><span id="iPT">0:35</span></span><span>140 wpm <svg class="ic"><use href="#i-eye-off"/></svg></span></div>
+              <div class="sc"><div class="tx" id="iPTxt"><div>Hi everyone, and thanks for joining.</div><div>Today I want to show you how Lintel</div><div>turns the notch on your Mac into</div><div>the most useful spot on your screen.</div><div>Your script scrolls right under the camera,</div><div>so your eyes stay close to the lens.</div><div>Nobody on the call can see it.</div></div></div>
+            </div>
+          </div>
+
+          <div class="dcur" id="dCur"><svg class="ic"><use href="#i-pointer"/></svg></div>
+        </div>
+      </div>
+      <noscript><img src="shots/01-notch.jpg" alt="Lintel's Home in the notch" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:24px"></noscript>
+    </div>
+    <div class="base"></div>
   </div>
-  <div class="scrollhint" aria-hidden="true"><span>Watch the notch</span><i></i></div>
+  <div class="tour" id="tour">
+    <button class="pp" id="tourPP" aria-label="Pause the demo"><svg class="ic"><use href="#i-pause"/></svg></button>
+    <div class="tx" id="tourTx"><b>Home</b>Rest the pointer on the notch: your music, next meeting and tools, one glance up.</div>
+    <div class="steps" id="steps"></div>
+  </div>
+  <p class="hint"><svg class="ic"><use href="#i-pointer"/></svg>This is a live demo. Click any tab in the notch to explore.</p>
+</section>
+
+<!-- ================= PROOF ================= -->
+<div class="works" data-reveal>
+  <p>Works wherever you work</p>
+  <ul><li>Zoom</li><li>Google Meet</li><li>Microsoft Teams</li><li>Slack</li><li>FaceTime</li><li>Mail</li><li>Notion</li><li>VS Code</li></ul>
+</div>
+<div class="mwrap">
+  <div class="metrics" data-reveal>
+    <div><b>0 bytes</b><span>of your audio sent to a server</span></div>
+    <div><b>3 languages</b><span>English, Hindi and Bengali, even in one sentence</span></div>
+    <div><b>13 tools</b><span>in the notch, one glance up</span></div>
+    <div><b>7 days</b><span>free, with every feature unlocked</span></div>
+  </div>
+</div>
+
+<!-- ================= HOW ================= -->
+<section id="how">
+  <div class="wrap">
+    <div class="sh">
+      <div><span class="kicker"><svg class="ic"><use href="#i-circle-play"/></svg>How it works</span><h2>Up and running in a minute.</h2></div>
+      <div><p>No account, no setup project. Lintel lives in the notch you already have, and a short guide sets up the rest.</p></div>
+    </div>
+    <div class="how">
+      <div class="card" data-reveal><div class="n">1</div><h4>Install from the Mac App Store</h4><p>A guided setup picks your languages and your favourite tabs. Your 7-day trial starts with everything unlocked.</p></div>
+      <div class="card" data-reveal><div class="n">2</div><h4>Rest the pointer on the notch</h4><p>Or press <kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>Space</kbd>. The notch opens into Lintel, right where your eyes already are.</p></div>
+      <div class="card" data-reveal><div class="n">3</div><h4>Speak, record, present or focus</h4><p>Hold ⌥ to dictate, transcribe a call, read a script or start a focus session. Then it tucks itself away.</p></div>
+    </div>
+  </div>
 </section>
 
 <!-- ================= VOICE ================= -->
-<section id="voice" data-island="Voice typing" data-icon="i-mic" data-c="#8b7bff">
+<section id="voice">
   <div class="wrap">
-    <div class="head" style="--c:var(--accent)">
-      <div class="eyebrow">Voice typing</div>
-      <h2 class="rise">Speak. It writes.</h2>
-      <p>Hold a key, talk, let go. Your words are ready to paste into any app: email, Slack, documents, code. Recognised on your Mac, never uploaded.</p>
+    <div class="sh">
+      <div><span class="kicker" style="--c:var(--accent2)"><svg class="ic"><use href="#i-mic"/></svg>Voice typing</span><h2>Speak. It writes.</h2></div>
+      <div><p>Hold a key, talk, let go. Your words are ready to paste into any app: email, Slack, documents, code. Recognised on your Mac, never uploaded.</p><a class="tlink" data-cta href="#pricing">Try it free for 7 days <svg class="ic"><use href="#i-arrow-right"/></svg></a></div>
     </div>
-
-    <div class="card samples" id="samples">
-          <div class="lbl">Try a sample</div>
-          <button class="cur" data-s="0">English <span class="tag en">EN</span></button>
-          <button data-s="1">Hindi, as you type it <span class="tag hi">HI</span></button>
-          <button data-s="2">বাংলা <span class="tag bn">BN</span></button>
-          <button data-s="3">Bengali + English <span class="tag en">BN+EN</span></button>
+    <div class="card samples" id="samples" data-reveal>
+      <button class="cur" data-s="0">English <span class="tag en">EN</span></button>
+      <button data-s="1">Hindi, as you type it <span class="tag hi">HI</span></button>
+      <button data-s="2">বাংলা <span class="tag bn">BN</span></button>
+      <button data-s="3">Bengali and English <span class="tag en">BN+EN</span></button>
+    </div>
+    <div class="vgrid" data-reveal>
+      <div class="vscreen" id="vscreen">
+        <div class="mini" id="vMini">
+          <div class="mv" id="vRec"><span><svg class="ic"><use href="#i-mic"/></svg><span id="vT">0:00</span></span><span class="wave" id="vWave"></span></div>
+          <div id="vCopied"><span class="tk"><svg class="ic"><use href="#i-check"/></svg></span>Copied · <kbd>⌘V</kbd> to paste</div>
         </div>
-    <div class="voice-grid" data-reveal>
-      <div class="mail" aria-label="Sample email">
-        <div class="bar"><i></i><i></i><i></i><span>New Message</span></div>
-        <div class="f"><em>To:</em><span id="mTo">Maya Chen</span></div>
-        <div class="f"><em>Subject:</em><span id="mSub">Design review</span></div>
-        <div class="body" id="mBody"><span style="color:#b0b0b6">Your words land here when you paste.</span></div>
-      </div>
-      <div class="side">
-
-        <div class="card hold" id="hold">
-          <button class="key" id="key" aria-label="Hold to talk"><b>⌥</b><span>option</span></button>
-          <div class="live" id="live" aria-live="polite"></div>
-          <p><b>Hold to talk</b>, then let go to paste.<br>On a keyboard, hold either ⌥ Option key.</p>
+        <div class="win on">
+          <div class="tbar"><i></i><i></i><i></i><span>New Message</span></div>
+          <div class="wm-f"><em>To:</em><span id="mTo">Maya Chen</span></div>
+          <div class="wm-f"><em>Subject:</em><span id="mSub">Design review</span></div>
+          <div class="wm-b" id="mBody"><span class="ph">Your words land here when you paste.</span></div>
+          <div class="paste" id="paste"><b>⌘</b><b>V</b></div>
         </div>
       </div>
+      <div class="card hold">
+        <button class="key" id="key" aria-label="Hold to talk"><b>⌥</b><span>option</span></button>
+        <div class="heard" id="heard" aria-live="polite"></div>
+        <p><b>Hold to talk</b>, then let go to paste.<br>On a keyboard, hold either ⌥ Option key.</p>
+      </div>
     </div>
-
     <div class="card cleanup" data-reveal>
-      <div class="l">
-        <span class="tag max">Max</span>
-        <h3>AI clean-up, on your Mac.</h3>
-        <p>The ums, repeats and false starts disappear. Capitals and punctuation show up. Apple Intelligence does it on device, so your words still never leave your Mac.</p>
-      </div>
+      <div class="l"><span class="tag max">Max</span><h3>AI clean-up, on your Mac.</h3><p>The ums, repeats and false starts disappear. Capitals and punctuation show up. Apple Intelligence does it on device, so your words still never leave your Mac.</p></div>
       <div class="r">
         <div class="raw" id="raw"><span class="x">um, so </span><span class="fix"><span class="o">i</span><span class="n">I</span></span> think we should <span class="x">uh </span>move <span class="x">the </span>the review to <span class="fix"><span class="o">thursday</span><span class="n">Thursday,</span></span> because the onboarding flow <span class="x">isn't </span>isn't ready<span class="fix"><span class="o">&#8203;</span><span class="n">.</span></span></div>
         <div class="switch"><button role="switch" aria-checked="false" id="cleanSw" aria-label="AI clean-up"></button><span>AI clean-up</span></div>
       </div>
     </div>
-
     <div class="feats">
-      <div class="card feat" data-reveal style="--c:var(--accent)"><svg><use href="#i-keyboard"/></svg><h4>Hold a key, or tap</h4><p>Hold right ⌥ and talk, or tap to start and stop. Pick the key you like.</p></div>
-      <div class="card feat" data-reveal style="--c:var(--pink)"><svg><use href="#i-book"/></svg><h4>Your words, spelled right</h4><p>A personal dictionary for names and terms, and snippets for the phrases you say every day.</p></div>
-      <div class="card feat" data-reveal style="--c:var(--them)"><svg><use href="#i-doc"/></svg><h4>Into any app</h4><p>Mail, Slack, Notes, Docs, your code editor. If you can paste there, you can speak there.</p></div>
-      <div class="card feat" data-reveal style="--c:var(--green)"><svg><use href="#i-lock"/></svg><h4>Heard on your Mac</h4><p>Apple's speech models and Lintel's language models run on device. Audio is never saved or sent.</p></div>
+      <div class="card feat" data-reveal style="--c:var(--accent2)"><svg class="ic"><use href="#i-keyboard"/></svg><h4>Hold a key, or tap</h4><p>Hold right ⌥ and talk, or tap to start and stop. Pick the key you like.</p></div>
+      <div class="card feat" data-reveal style="--c:var(--pink)"><svg class="ic"><use href="#i-book-open"/></svg><h4>Your words, spelled right</h4><p>A personal dictionary for names and terms, and snippets for phrases you say every day.</p></div>
+      <div class="card feat" data-reveal style="--c:var(--them)"><svg class="ic"><use href="#i-app-window"/></svg><h4>Into any app</h4><p>Mail, Slack, Notes, Docs, your code editor. If you can paste there, you can speak there.</p></div>
+      <div class="card feat" data-reveal style="--c:var(--green)"><svg class="ic"><use href="#i-lock"/></svg><h4>Heard on your Mac</h4><p>Apple's speech models and Lintel's language models run on device. Audio is never saved or sent.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ================= LANGUAGES ================= -->
-<section id="languages" data-island="Hindi · Bengali · English" data-icon="i-globe" data-c="#ff6fae">
+<section id="languages">
   <div class="wrap">
-    <div class="head" style="--c:var(--pink)">
-      <div class="eyebrow">Hindi · Bengali · English</div>
-      <h2 class="rise">Mix your languages. It keeps up.</h2>
-      <p>Lintel hears where one language ends and the next begins, and writes each part with the model for that language. Even in one sentence.</p>
+    <div class="sh">
+      <div><span class="kicker" style="--c:var(--pink)"><svg class="ic"><use href="#i-languages"/></svg>Hindi · Bengali · English</span><h2>Mix your languages. It keeps up.</h2></div>
+      <div><p>Lintel hears where one language ends and the next begins, and writes each part with the model for that language. Hindi in English letters, the way you type it. Bengali in Bengali script. Even in one sentence.</p></div>
     </div>
     <div class="card river" data-reveal>
-      <div class="sent" id="sent" lang="mul"></div>
+      <div class="sent" id="sent"></div>
       <div class="note">Each coloured part is written by its own language model, on your Mac.</div>
       <div class="dots" id="sdots"></div>
     </div>
     <div class="lang3">
-      <div class="card" data-reveal><span class="tag hi">Hindi</span><p class="typed" data-text="Yaar, main thoda late ho jaoonga. Sabko bata dena ki call paanch baje start hogi."></p><div class="hm-sub">In English letters, the way you type it. Prefer Devanagari? One setting.</div></div>
-      <div class="card" data-reveal><span class="tag bn">Bengali</span><p class="typed" lang="bn" data-text="আজকে আমি অফিসে একটু দেরি করে পৌঁছাব, তুমি প্লিজ ক্লায়েন্টকে একটা মেইল করে দিও।"></p><div class="hm-sub">In Bengali script, with its own Bengali model.</div></div>
-      <div class="card" data-reveal><span class="tag en">Bengali + English</span><p class="typed" data-text="আমার মনে হয় ফিচারটা খুব কাজের হবে, but we need to test it properly before the release."></p><div class="hm-sub">Each language in its own script, cut where you switch.</div></div>
+      <div class="card" data-reveal><span class="tag hi">Hindi</span><p class="typed" data-text="Yaar, main thoda late ho jaoonga. Sabko bata dena ki call paanch baje start hogi."></p><small>In English letters, the way you type it. Prefer Devanagari? One setting.</small></div>
+      <div class="card" data-reveal><span class="tag bn">Bengali</span><p class="typed" lang="bn" data-text="আজকে আমি অফিসে একটু দেরি করে পৌঁছাব, তুমি প্লিজ ক্লায়েন্টকে একটা মেইল করে দিও।"></p><small>In Bengali script, with its own Bengali model.</small></div>
+      <div class="card" data-reveal><span class="tag en">Bengali and English</span><p class="typed" data-text="আমার মনে হয় ফিচারটা খুব কাজের হবে, but we need to test it properly before the release."></p><small>Each language in its own script, cut where you switch.</small></div>
     </div>
   </div>
 </section>
 
 <!-- ================= MEETINGS ================= -->
-<section id="meetings" data-island="Meeting notes" data-icon="i-wave" data-c="#5ad1cc">
+<section id="meetings">
   <div class="wrap">
-    <div class="head" style="--c:var(--them)">
-      <div class="eyebrow">Meeting notes</div>
-      <h2 class="rise">Every meeting, written down.</h2>
-      <p>Both sides of any call, you and them, written as you talk. Lintel notices when a call starts and offers to transcribe it. Audio is never saved; only the text is kept.</p>
+    <div class="sh">
+      <div><span class="kicker" style="--c:var(--them)"><svg class="ic"><use href="#i-audio-lines"/></svg>Meeting notes</span><h2>Every meeting, written down.</h2></div>
+      <div><p>Both sides of any call, you and them, written as you talk. Lintel notices when a call starts and offers to transcribe it. Audio is never saved; only the text is kept.</p><a class="tlink" data-cta href="#pricing">Start your free trial <svg class="ic"><use href="#i-arrow-right"/></svg></a></div>
     </div>
     <div class="meet" data-reveal>
-      <div class="screen" id="callScreen" aria-hidden="true">
-        <div class="mini" id="mini">
-          <div class="offer"><div style="font-size:12.5px">Zoom call started. Transcribe it?</div><div class="row"><span class="pill white" id="offerYes">Transcribe</span><span class="pill">Not now</span></div></div>
-          <div class="rec"><span class="dot"></span>Transcribing <span id="miniClock" style="color:var(--ink3);font-variant-numeric:tabular-nums">0:00</span></div>
+      <div class="callscr" id="callScr" aria-hidden="true">
+        <div class="mini" id="cMini">
+          <div class="offer"><div>Zoom call started. Transcribe it?</div><div><span class="pillb w" id="offerYes">Transcribe</span><span class="pillb">Not now</span></div></div>
+          <div class="rec"><span class="dot"></span>Transcribing <span id="cMiniClock" style="color:var(--ink3);font-variant-numeric:tabular-nums">0:00</span></div>
         </div>
         <div class="tiles">
-          <div class="tile" id="tThem" style="--ring:var(--them)"><div class="av" style="background:linear-gradient(135deg,#4fd1c5,#2b6c9a)">A</div><div class="nm">Ankita</div><div class="bars"><b></b><b></b><b></b></div></div>
-          <div class="tile" id="tMe" style="--ring:var(--accent)"><div class="av" style="background:linear-gradient(135deg,#a597ff,#5b3df5)">You</div><div class="nm">You</div><div class="bars"><b></b><b></b><b></b></div></div>
+          <div class="ct" id="tThem" style="--ring:var(--them)"><div class="av" style="background:linear-gradient(135deg,#4fd1c5,#2b6c9a)">A</div><span class="nm">Ankita</span><div class="bars"><b></b><b></b><b></b></div></div>
+          <div class="ct" id="tMe" style="--ring:var(--accent)"><div class="av" style="background:linear-gradient(135deg,#a597ff,#5b3df5)">S</div><span class="nm">You</span><div class="bars"><b></b><b></b><b></b></div></div>
         </div>
-        <div class="callbar"><i></i><i></i><i></i></div>
-        <svg class="cursor" id="cursor" viewBox="0 0 20 20"><path d="M3 2l13 7.5-6 1.2-3 5.8z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        <div class="cbar"><i></i><i></i><i></i></div>
+        <div class="cur2" id="cCur"><svg class="ic"><use href="#i-pointer"/></svg></div>
       </div>
       <div class="card panel" id="panel">
-        <div class="top"><div class="eyebrow" id="pHead"><span class="dot"></span>Transcribing · Zoom</div><span class="clock" id="pClock">0:00</span></div>
+        <div class="top"><div class="ph" id="pHead"><span class="dot"></span>Transcribing · Zoom</div><span class="clk" id="pClock">0:00</span></div>
         <div class="lines" id="lines"></div>
         <div class="summary" id="summary">
-          <div><h5><svg width="14" height="14"><use href="#i-spark"/></svg>Summary <span class="tag max" style="font-size:9.5px;padding:2px 7px">Max</span></h5>
+          <div><h5><svg class="ic"><use href="#i-file-text"/></svg>Summary <span class="tag max">Max</span></h5>
             <ul><li>The beta ships on Friday, after final testing.</li><li>Ankita sends the report by Friday; the release notes get updated tonight.</li></ul></div>
-          <div><h5>Action items → Todos</h5>
-            <div style="display:flex;flex-direction:column;gap:6px"><div class="todo"><i></i>Ankita: send the report by Friday<span class="sent">Added</span></div><div class="todo"><i></i>Lock the beta date today<span class="sent">Added</span></div></div></div>
+          <div><h5><svg class="ic"><use href="#i-list-checks"/></svg>Action items, sent to Todos</h5>
+            <div style="display:flex;flex-direction:column;gap:6px"><div class="todo"><i></i>Ankita: send the report by Friday<span class="ok">Added</span></div><div class="todo"><i></i>Lock the beta date today<span class="ok">Added</span></div></div></div>
           <div class="ask"><div class="q" id="askQ"></div><div class="a" id="askA"></div></div>
         </div>
-        <div class="foot"><span class="hm-sub" id="pFoot">Hindi, Bengali and English, as people speak them</span><button class="pill" id="replay">Replay</button></div>
+        <div class="foot2"><span>Hindi, Bengali and English, as people speak them</span><button class="pillb" id="replay"><svg class="ic"><use href="#i-play"/></svg>Replay</button></div>
       </div>
     </div>
-    <div class="apps"><span>Zoom</span><span>Google Meet</span><span>Microsoft Teams</span><span>Slack</span><span>FaceTime</span><span>Webex</span><span>Any app that plays the call</span></div>
+    <div class="callapps"><span>Zoom</span><span>Google Meet</span><span>Microsoft Teams</span><span>Slack</span><span>FaceTime</span><span>Webex</span><span>Any app that plays the call</span></div>
     <div class="feats">
-      <div class="card feat" data-reveal style="--c:var(--them)"><svg><use href="#i-bell"/></svg><h4>Notices the call</h4><p>When a call starts, the notch offers to transcribe it. One click, and it's writing.</p></div>
-      <div class="card feat" data-reveal style="--c:var(--accent)"><svg><use href="#i-users"/></svg><h4>You and them</h4><p>Your microphone and the call's audio, each written down and labelled.</p></div>
-      <div class="card feat" data-reveal style="--c:var(--pink)"><svg><use href="#i-spark"/></svg><h4>Summary and action items <span class="tag max" style="font-size:9.5px;padding:2px 7px">Max</span></h4><p>Apple Intelligence writes the summary on your Mac and sends action items to Todos.</p></div>
-      <div class="card feat" data-reveal style="--c:var(--amber)"><svg><use href="#i-chat"/></svg><h4>Ask your meetings <span class="tag max" style="font-size:9.5px;padding:2px 7px">Max</span></h4><p>“What did we decide about the launch?” Get the answer from any past meeting.</p></div>
+      <div class="card feat" data-reveal style="--c:var(--them)"><svg class="ic"><use href="#i-bell-ring"/></svg><h4>Notices the call</h4><p>When a call starts, the notch offers to transcribe it. One click, and it's writing.</p></div>
+      <div class="card feat" data-reveal style="--c:var(--accent2)"><svg class="ic"><use href="#i-users"/></svg><h4>You and them</h4><p>Your microphone and the call's audio, each written down and labelled.</p></div>
+      <div class="card feat" data-reveal style="--c:var(--pink)"><svg class="ic"><use href="#i-file-text"/></svg><h4>Summary and action items <span class="tag max">Max</span></h4><p>Apple Intelligence writes the summary on your Mac and sends action items to Todos.</p></div>
+      <div class="card feat" data-reveal style="--c:var(--amber)"><svg class="ic"><use href="#i-message"/></svg><h4>Ask your meetings <span class="tag max">Max</span></h4><p>“What did we decide about the launch?” Get the answer from any past meeting.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ================= TELEPROMPTER ================= -->
-<section id="prompter" data-island="Teleprompter" data-icon="i-lines" data-c="#ffb340">
+<section id="prompter">
   <div class="wrap">
-    <div class="head" style="--c:var(--amber)">
-      <div class="eyebrow">Teleprompter</div>
-      <h2 class="rise">Keep eye contact while you read.</h2>
-      <p>Your script scrolls right below the camera, so you look at the lens, not at your notes. Set a pace, or let it follow your voice. Nobody on the call can see it.</p>
+    <div class="sh">
+      <div><span class="kicker" style="--c:var(--amber)"><svg class="ic"><use href="#i-scroll-text"/></svg>Teleprompter</span><h2>Keep eye contact while you read.</h2></div>
+      <div><p>Your script scrolls right below the camera, so you look at the lens, not at your notes. Set a pace, or let it follow your voice. Nobody on the call can see it.</p></div>
     </div>
     <div class="tp" data-reveal>
-      <div class="bezel" id="bezel">
-        <div class="notch"></div>
-        <div class="prompter" id="prompterBox">
-          <div class="readline"></div>
-          <div class="scroll"><div class="txt" id="ptxt"></div></div>
-          <span class="pill paused">Paused · move away to carry on</span>
+      <div class="bz" id="bz">
+        <div class="prom fixed" id="prom">
+          <div class="cam"></div>
+          <div class="sc"><div class="tx" id="ptxt"></div></div>
+          <span class="pillb paused">Paused · move away to carry on</span>
         </div>
-        <div class="desk" aria-hidden="true"><div class="win"><b>Q4 launch plan</b><i></i><i style="width:70%"></i><i style="width:84%"></i></div><div class="win rec"><span><span class="dot"></span>REC 02:14</span></div><div class="win"><i style="width:60%"></i><i></i><i style="width:40%"></i><i style="width:75%"></i></div></div>
+        <div class="desk" aria-hidden="true"><div class="w"><b>Q4 launch plan</b><i></i><i style="width:70%"></i><i style="width:84%"></i></div><div class="w rec"><span class="dot" style="margin-right:7px"></span>REC 02:14</div><div class="w"><i style="width:60%"></i><i></i><i style="width:40%"></i><i style="width:75%"></i></div></div>
       </div>
-      <div class="card controls">
+      <div class="card ctl">
         <div><label for="speed">Speed <span id="wpm">140 words a minute</span></label><input type="range" min="80" max="220" value="140" id="speed"></div>
         <div class="switch"><button role="switch" aria-checked="false" id="follow" aria-label="Follow my voice"></button><span>Follow my voice</span></div>
-        <div class="sharebox"><div class="hd">What the call sees <span class="tag plus">Script hidden</span></div><div class="bd"><svg class="face" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="42" fill="#2a2744"/><path d="M14 84c2-16 14-24 28-24s26 8 28 24z" fill="#6d5cff"/><circle cx="42" cy="38" r="17" fill="#e8b48f"/><path d="M25 37c0-12 8-20 17-20s17 8 17 20c-3-7-9-10-17-10s-14 3-17 10z" fill="#2b1d16"/><circle cx="36" cy="37" r="2.3" fill="#1d1d1f"/><circle cx="48" cy="37" r="2.3" fill="#1d1d1f"/><path d="M36 45q6 5 12 0" stroke="#8a4532" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg><span class="pill green ok">Looking at you</span></div></div>
-        <p class="hm-sub" style="margin:0">Hover the script to pause. A countdown, a script library and voice-follow are built in.</p>
+        <div class="share"><div class="hd">What the call sees <span class="tag ok">Script hidden</span></div><div class="bd"><svg class="face" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="42" fill="#2a2744"/><path d="M14 84c2-16 14-24 28-24s26 8 28 24z" fill="#6d5cff"/><circle cx="42" cy="38" r="17" fill="#e8b48f"/><path d="M25 37c0-12 8-20 17-20s17 8 17 20c-3-7-9-10-17-10s-14 3-17 10z" fill="#2b1d16"/><circle cx="36" cy="37" r="2.3" fill="#1d1d1f"/><circle cx="48" cy="37" r="2.3" fill="#1d1d1f"/><path d="M36 45q6 5 12 0" stroke="#8a4532" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg><span class="pillb ok" style="background:var(--green);color:#03250e"><svg class="ic"><use href="#i-check"/></svg>Looking at you</span></div></div>
+        <p style="margin:0;font-size:13.5px;color:var(--ink3)">Hover the script to pause. A countdown, a script library and voice-follow are built in.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ================= FOCUS ================= -->
-<section id="focus" data-island="Focus" data-icon="i-leaf" data-c="#34c759">
+<section id="focus">
   <div class="wrap">
-    <div class="head" style="--c:var(--green)">
-      <div class="eyebrow">Focus</div>
-      <h2 class="rise">Focus that actually blocks.</h2>
-      <p>Start a session and a tree grows in the notch. Distracting apps and websites get a calm block screen until you're done, with a one-minute pass when you really need it.</p>
+    <div class="sh">
+      <div><span class="kicker" style="--c:var(--green)"><svg class="ic"><use href="#i-sprout"/></svg>Focus</span><h2>Focus that actually blocks.</h2></div>
+      <div><p>Start a session and a tree grows in the notch. Distracting apps and websites get a calm block screen until you're done, with a one-minute pass when you really need it.</p></div>
     </div>
     <div class="focus" data-reveal>
       <div class="card grove">
-        <div class="top">
-          <div class="ring" id="gRing"><svg viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="45" fill="none" stroke-width="6"/><circle class="fg" id="gArc" cx="50" cy="50" r="45" fill="none" stroke-width="6" stroke-dasharray="282.7" stroke-dashoffset="282.7"/></svg>
-            <div class="tree"><svg class="tr" id="gTree" data-stage="0" viewBox="0 0 64 64"><ellipse cx="32" cy="58" rx="15" ry="3.5" fill="#4a3426"/><rect class="trunk" x="30" y="30" width="4" height="28" rx="2" fill="#9a6a48"/><circle class="leaf l1" cx="32" cy="30" r="8" fill="#2fb350"/><circle class="leaf l2" cx="24" cy="25" r="9" fill="#34c759"/><circle class="leaf l3" cx="40" cy="23" r="10" fill="#3fd46a"/><circle class="leaf l4" cx="32" cy="15" r="11" fill="#4ade80"/></svg></div>
-          </div>
-          <div><div class="state" id="gState">READY TO FOCUS</div><div class="big" id="gTime">25:00</div><div class="what">Deep work · Record the walkthrough</div></div>
+        <div class="gtop">
+          <div class="ring"><svg class="r" viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="45" fill="none" stroke-width="6"/><circle class="fg" id="gArc" cx="50" cy="50" r="45" fill="none" stroke-width="6" stroke-dasharray="282.7" stroke-dashoffset="282.7"/></svg><div class="in" id="gTreeBox" data-tree="0:92"></div></div>
+          <div><div class="st" id="gState">READY TO FOCUS</div><div class="big" id="gTime">25:00</div><div class="what">Deep work · Record the walkthrough</div></div>
         </div>
-        <div class="durs" id="durs"><button class="cur" data-m="25">25m</button><button data-m="50">50m</button><button data-m="90">90m</button><button class="pill white" id="gStart" style="margin-left:auto;padding:8px 20px">Start</button></div>
-        <div class="garden" id="garden"></div>
-        <div class="stats"><div>STREAK<b id="gStreak">7 days</b></div><div>7 DAYS<b>8h 50m</b></div><div>ALL TIME<b>13h 15m</b></div></div>
+        <div class="durs" id="durs"><button class="cur" data-m="25">25m</button><button data-m="50">50m</button><button data-m="90">90m</button><button class="go" id="gStart">Start</button></div>
+        <div class="garden" id="garden" data-garden="3,4,0,2,4,3,1" data-size="1.35"></div>
+        <div class="stats3"><div>STREAK<b id="gStreak">7 days</b></div><div>7 DAYS<b>8h 50m</b></div><div>ALL TIME<b>13h 15m</b></div></div>
       </div>
       <div class="card browser">
         <div class="tabs" id="btabs"><button class="cur" data-t="docs">Docs</button><button data-t="videos">Videos</button><button data-t="feed">Feed</button></div>
         <div class="page">
           <div class="fake" id="fake"></div>
-          <div class="block" id="block"><div class="app"></div><h4 id="bTitle">Videos can wait</h4><p>It's on your Grove block list.</p><div class="left">Deep work <span id="bLeft" style="float:right;color:var(--ink2)">24:10 left</span><div class="barx"><i id="bBar"></i></div></div><div class="acts"><button class="pill white" id="bBack">Back to work</button><button class="pill" id="bPass">1-minute pass</button></div></div>
+          <div class="block" id="block"><div class="appi"><span><svg class="ic"><use href="#i-leaf"/></svg></span></div><h4 id="bTitle">Videos can wait</h4><p>It's on your Grove block list.</p><div class="left">Deep work <span id="bLeft" style="float:right;color:var(--ink2)">24:10 left</span><div class="barx"><i id="bBar"></i></div></div><div class="acts2"><button class="pillb w" id="bBack">Back to work</button><button class="pillb" id="bPass">1-minute pass</button></div></div>
         </div>
-        <div class="hint" id="fHint">Start a session, then try opening Videos or Feed. The demo runs a minute every second.</div>
+        <div class="fhint" id="fHint">Start a session, then try opening Videos or Feed. The demo runs a minute every second.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= EVERYTHING ================= -->
-<section id="everything" data-island="One glance up" data-icon="i-grid" data-c="#ff9f5a">
+<!-- ================= COMPARE ================= -->
+<section id="compare">
   <div class="wrap">
-    <div class="head" style="--c:var(--hi)">
-      <div class="eyebrow">One glance up</div>
-      <h2 class="rise">Everything you check, in the notch.</h2>
-      <p>Rest the pointer on the notch, or press ⌃⌥Space. Choose your tabs and widgets, put them in your order, pick your colour. Every card below is live: play with it.</p>
+    <div class="sh">
+      <div><span class="kicker"><svg class="ic"><use href="#i-layout-grid"/></svg>One app, not five</span><h2>Everything you'd install separately, in one notch.</h2></div>
+      <div><p>Dictation, meeting notes, a teleprompter, a focus blocker and a clipboard manager usually mean five apps and five subscriptions. Lintel puts them where your eyes already are.</p></div>
     </div>
-    <div class="bento" style="grid-auto-flow:dense">
+    <div class="cmp">
+      <div class="card without" data-reveal><h3>Without Lintel</h3><p class="s">Five apps to install, learn and pay for</p>
+        <ul><li><svg class="ic"><use href="#i-app-window"/></svg>A dictation app</li><li><svg class="ic"><use href="#i-app-window"/></svg>A meeting note-taker</li><li><svg class="ic"><use href="#i-app-window"/></svg>A teleprompter app</li><li><svg class="ic"><use href="#i-app-window"/></svg>A focus and site blocker</li><li><svg class="ic"><use href="#i-app-window"/></svg>A clipboard manager</li></ul>
+        <div class="tot">Five windows to find, and with some of them your audio goes to a server.</div></div>
+      <div class="card with" data-reveal><h3>With Lintel</h3><p class="s">One app, in the notch you already have</p>
+        <ul><li><svg class="ic"><use href="#i-check"/></svg>Voice typing in English, Hindi and Bengali<em>Pro</em></li><li><svg class="ic"><use href="#i-check"/></svg>Notes from both sides of every call<em>Pro</em></li><li><svg class="ic"><use href="#i-check"/></svg>A teleprompter under the camera<em>Pro</em></li><li><svg class="ic"><use href="#i-check"/></svg>Focus that blocks apps and sites<em>Plus</em></li><li><svg class="ic"><use href="#i-check"/></svg>Clipboard history<em>Free</em></li></ul>
+        <div class="tot"><b>Plans from $2.99 a month.</b> Everything runs on your Mac.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EVERYTHING ================= -->
+<section id="everything">
+  <div class="wrap">
+    <div class="sh">
+      <div><span class="kicker" style="--c:var(--hi)"><svg class="ic"><use href="#i-layout-grid"/></svg>One glance up</span><h2>Everything you check, in the notch.</h2></div>
+      <div><p>Choose your tabs and widgets, put them in your order and pick your colour. Every card below is live: try it.</p></div>
+    </div>
+    <div class="bento">
       <div class="card music s2" id="music" data-reveal>
-        <div class="w-h"><span class="row" style="gap:8px"><svg width="15" height="15"><use href="#i-wave"/></svg>Music</span><span class="eqz"><b></b><b></b><b></b></span></div>
-        <div class="row" style="gap:18px"><div class="art" id="mArt"></div><div class="meta"><b id="mTitle">Golden Hour</b><span id="mArtist">Lumen Drift</span><div class="hm-sub" style="margin-top:4px">The card takes on the album's colours.</div></div></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-music"/></svg>Music</span><span class="eqz"><b></b><b></b><b></b></span></div>
+        <div style="display:flex;gap:18px;align-items:center"><div class="art"></div><div class="meta"><b id="mTitle">Golden Hour</b><span id="mArtist">Lumen Drift</span><div style="font-size:13px;color:var(--ink3);margin-top:4px">The card takes on the album's colours.</div></div></div>
         <div class="prog"><i id="mProg"></i></div>
         <div class="times"><span id="mCur">1:27</span><span id="mLeft">-2:06</span></div>
-        <div class="mctl"><button id="mPrev" aria-label="Previous"><svg><use href="#i-prev"/></svg></button><button class="pp" id="mPP" aria-label="Play or pause"><svg><use href="#i-pause"/></svg></button><button id="mNext" aria-label="Next"><svg><use href="#i-next"/></svg></button></div>
+        <div class="mctl"><button id="mPrev" aria-label="Previous"><svg class="ic"><use href="#i-skip-back"/></svg></button><button class="pp" id="mPP" aria-label="Play or pause"><svg class="ic"><use href="#i-pause"/></svg></button><button id="mNext" aria-label="Next"><svg class="ic"><use href="#i-skip-forward"/></svg></button></div>
       </div>
       <div class="card next" data-reveal>
-        <div class="w-h">Next up <span>Today</span></div>
-        <div class="in" id="nIn">IN 14M</div>
+        <div class="wh"><span><svg class="ic"><use href="#i-calendar"/></svg>Next up</span><span>Today</span></div>
+        <div class="nin" id="nIn">IN 14M</div>
         <div class="ev"><b>Design review</b><span>7:10 PM – 7:55 PM</span></div>
-        <span class="join"><svg width="14" height="14"><use href="#i-video"/></svg>Join</span>
-        <div class="later">● 9:10 PM · Lunch with Maya</div>
+        <span class="join"><svg class="ic"><use href="#i-video"/></svg>Join</span>
+        <div class="later">9:10 PM · Lunch with Maya</div>
       </div>
       <div class="card r2" data-reveal>
-        <div class="w-h">Clipboard <span>⌃⌥V</span></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-clipboard"/></svg>Clipboard</span><span>⌃⌥V</span></div>
         <div class="clip" id="clip"></div>
-        <div class="hm-sub" style="margin-top:auto;padding-top:12px">Pin favourites. Copies marked as passwords are never kept.</div>
+        <div style="margin-top:auto;padding-top:12px;font-size:13px;color:var(--ink3)">Pin favourites. Copies marked as passwords are never kept.</div>
       </div>
       <div class="card" data-reveal>
-        <div class="w-h">Today <span>Reminders</span></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-list-checks"/></svg>Today</span><span>Reminders</span></div>
         <div class="todos" id="todos">
-          <button style="--c:#5ac8fa"><i></i><span>Book the studio</span></button>
-          <button style="--c:#ffb340"><i></i><span>Review the screenshots</span></button>
-          <button style="--c:#8b7bff"><i></i><span>Send the deck</span></button>
-          <button style="--c:#ff6fae"><i></i><span>Call Ma at 8</span></button>
+          <button style="--c:#5ac8fa"><i><svg class="ic"><use href="#i-check"/></svg></i><span>Book the studio</span></button>
+          <button style="--c:#ffb340"><i><svg class="ic"><use href="#i-check"/></svg></i><span>Review the screenshots</span></button>
+          <button style="--c:#8b7bff"><i><svg class="ic"><use href="#i-check"/></svg></i><span>Send the deck</span></button>
+          <button style="--c:#ff6fae"><i><svg class="ic"><use href="#i-check"/></svg></i><span>Call Ma at 8</span></button>
         </div>
       </div>
       <div class="card timerw" data-reveal>
-        <div class="w-h" style="width:100%">Timer <span id="tState">Running</span></div>
-        <div class="ring" id="tRing" role="button" aria-label="Pause or resume the timer"><svg viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="45" fill="none" stroke-width="6"/><circle class="fg" id="tArc" cx="50" cy="50" r="45" fill="none" stroke-width="6" stroke-dasharray="282.7" stroke-dashoffset="0"/></svg><div class="tree" id="tTime">5:00</div></div>
+        <div class="wh" style="width:100%"><span><svg class="ic"><use href="#i-timer"/></svg>Timer</span><span id="tState">Running</span></div>
+        <div class="ring" id="tRing" role="button" aria-label="Pause or resume the timer"><svg class="r" viewBox="0 0 100 100"><circle class="bgc" cx="50" cy="50" r="45" fill="none" stroke-width="6"/><circle class="fg" id="tArc" cx="50" cy="50" r="45" fill="none" stroke-width="6" stroke-dasharray="282.7" stroke-dashoffset="0"/></svg><div class="in" id="tTime">5:00</div></div>
       </div>
       <div class="card" data-reveal>
-        <div class="w-h">AI limits <span>left this window</span></div>
-        <div class="limits" id="limits"></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-gauge"/></svg>AI limits</span><span>left now</span></div>
+        <div class="lims" id="lims"></div>
       </div>
       <div class="card" data-reveal>
-        <div class="w-h">System <span>live</span></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-cpu"/></svg>System</span><span>live</span></div>
         <div class="mon">
-          <div><div class="m">CPU <b id="cpuV">18%</b></div><svg class="spark" viewBox="0 0 200 60" preserveAspectRatio="none"><path id="cpuP" fill="none" stroke="#8b7bff" stroke-width="2.5" stroke-linejoin="round"/><path id="cpuA" fill="rgba(139,123,255,.15)"/></svg></div>
-          <div><div class="m">Memory <b id="memV">11.2 GB</b></div><svg class="spark" viewBox="0 0 200 60" preserveAspectRatio="none" style="height:40px"><path id="memP" fill="none" stroke="#5ad1cc" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
+          <div><div class="m">CPU <b id="cpuV">18%</b></div><svg class="spark" viewBox="0 0 200 60" preserveAspectRatio="none"><path id="cpuA" fill="rgba(139,123,255,.15)"/><path id="cpuP" fill="none" stroke="#8b7bff" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
+          <div><div class="m">Memory <b id="memV">11.2 GB</b></div><svg class="spark" viewBox="0 0 200 40" preserveAspectRatio="none" style="height:38px"><path id="memP" fill="none" stroke="#5ad1cc" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
         </div>
       </div>
       <div class="card" data-reveal>
-        <div class="w-h">Volume <span>per app</span></div>
-        <div class="mixer" id="mixer">
-          <div class="r"><i style="background:linear-gradient(135deg,#2d8cff,#1a5fd6)"></i>Zoom<input type="range" value="80" aria-label="Zoom volume"></div>
-          <div class="r"><i style="background:linear-gradient(135deg,#ff5f7e,#ff2d55)"></i>Music<input type="range" value="45" aria-label="Music volume"></div>
-          <div class="r"><i style="background:linear-gradient(135deg,#4a154b,#e01e5a)"></i>Slack<input type="range" value="20" aria-label="Slack volume"></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-volume"/></svg>Volume</span><span>per app</span></div>
+        <div class="mixer">
+          <div class="r"><i style="background:linear-gradient(135deg,#2d8cff,#1a5fd6)"><svg class="ic"><use href="#i-video"/></svg></i>Zoom<input type="range" value="80" aria-label="Zoom volume"></div>
+          <div class="r"><i style="background:linear-gradient(135deg,#ff5f7e,#ff2d55)"><svg class="ic"><use href="#i-music"/></svg></i>Music<input type="range" value="45" aria-label="Music volume"></div>
+          <div class="r"><i style="background:linear-gradient(135deg,#7b4bd6,#4a2a90)"><svg class="ic"><use href="#i-message"/></svg></i>Slack<input type="range" value="20" aria-label="Slack volume"></div>
         </div>
       </div>
       <div class="card s2" data-reveal>
-        <div class="w-h">Live activities <span>slide out, then get out of the way</span></div>
-        <div class="acts"><div class="mn" id="actN"><span class="row" style="gap:7px" id="actL"></span><span id="actR"></span></div><div class="hm-sub" style="margin-top:46px;text-align:center">Charging, timers, meetings about to start, AI agents that finished.</div></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-bell-ring"/></svg>Live activities</span><span>slide out, then get out of the way</span></div>
+        <div class="acts"><div class="mn" id="actN"><span id="actL"></span><span id="actR"></span></div><div style="margin-top:46px;text-align:center;font-size:13.5px;color:var(--ink3)">Charging, timers, meetings about to start, coding agents that finished.</div></div>
       </div>
       <div class="card s2" data-reveal>
-        <div class="w-h">Shelf <span>drop a file here to try it</span></div>
-        <div class="shelf" id="shelf"><div class="f"><i></i>walkthrough.mov</div><div class="f"><i></i>Q4 roadmap.pdf</div></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-inbox"/></svg>Shelf</span><span>drop a file here to try it</span></div>
+        <div class="shelfw" id="shelf"><div class="f"><svg class="ic"><use href="#i-file-text"/></svg>walkthrough.mov</div><div class="f"><svg class="ic"><use href="#i-file-text"/></svg>Q4 roadmap.pdf</div></div>
       </div>
       <div class="card s2" data-reveal>
-        <div class="w-h">Make it yours <span>pick a colour</span></div>
-        <div class="row" id="accents" style="gap:10px;margin-bottom:16px"></div>
+        <div class="wh"><span><svg class="ic"><use href="#i-settings"/></svg>Make it yours</span><span>pick a colour</span></div>
+        <div id="accents" style="display:flex;gap:10px;margin-bottom:16px"></div>
         <div class="more"><span>Launcher</span><span>Notes</span><span>Camera mirror</span><span>Your own shortcuts</span><span>Widgets in your order</span><span>Works without a notch</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= PRIVATE ================= -->
-<section id="private" data-island="Private by design" data-icon="i-lock" data-c="#34c759">
+<!-- ================= PRIVACY ================= -->
+<section id="privacy">
   <div class="wrap">
-    <div class="head" style="--c:var(--green)">
-      <div class="eyebrow">Private by design</div>
-      <h2 class="rise">Your voice never leaves your Mac.</h2>
-      <p>No accounts. No analytics. No tracking. What Lintel hears, reads and shows is processed on your Mac.</p>
+    <div class="sh">
+      <div><span class="kicker" style="--c:var(--green)"><svg class="ic"><use href="#i-shield-check"/></svg>Private by design</span><h2>Your voice never leaves your Mac.</h2></div>
+      <div><p>No accounts. No analytics. No tracking. What Lintel hears, reads and shows is processed on your Mac, so it's safe for client calls and confidential work.</p></div>
     </div>
-    <div class="private" data-reveal>
+    <div class="privacy" data-reveal>
       <div class="card orbit">
-        <div class="cloud"><svg><use href="#i-cloudoff"/></svg>Lintel's servers: none</div>
-        <div class="mac"><div class="n"></div><div class="lock"><svg><use href="#i-lock"/></svg></div></div>
+        <div class="srv"><svg class="ic"><use href="#i-cloud-off"/></svg>Lintel's servers: none</div>
+        <div class="mac"><div class="n"></div><div class="lock"><svg class="ic"><use href="#i-lock"/></svg></div></div>
         <div class="sat" id="sat"></div>
       </div>
       <div class="card plist">
-        <div><svg><use href="#i-check"/></svg><p style="margin:0"><b>Speech is recognised on your Mac</b><span>By Apple's speech models and the language models Lintel downloads once. Audio is never saved or sent.</span></p></div>
-        <div><svg><use href="#i-check"/></svg><p style="margin:0"><b>Meetings keep only the text</b><span>The last few minutes of audio stay in memory to polish the text, then they're gone.</span></p></div>
-        <div><svg><use href="#i-check"/></svg><p style="margin:0"><b>AI by Apple Intelligence, on device</b><span>Clean-up, summaries and answers use Apple's on-device model.</span></p></div>
-        <div><svg><use href="#i-check"/></svg><p style="margin:0"><b>Nothing to sign up for</b><span>No accounts, analytics, crash reports or ads. Subscriptions go through the App Store.</span></p></div>
+        <div><svg class="ic"><use href="#i-circle-check"/></svg><p style="margin:0"><b>Speech is recognised on your Mac</b><span>By Apple's speech models and the language models Lintel downloads once. Audio is never saved or sent.</span></p></div>
+        <div><svg class="ic"><use href="#i-circle-check"/></svg><p style="margin:0"><b>Meetings keep only the text</b><span>The last few minutes of audio stay in memory to polish the text, then they're gone.</span></p></div>
+        <div><svg class="ic"><use href="#i-circle-check"/></svg><p style="margin:0"><b>AI by Apple Intelligence, on device</b><span>Clean-up, summaries and answers use Apple's on-device model.</span></p></div>
+        <div><svg class="ic"><use href="#i-circle-check"/></svg><p style="margin:0"><b>Nothing to sign up for</b><span>No accounts, analytics, crash reports or ads. Subscriptions go through the App Store.</span></p></div>
       </div>
     </div>
     <div class="card calendar" data-reveal>
-      <svg><use href="#i-cal"/></svg>
+      <svg class="ic"><use href="#i-calendar"/></svg>
       <div><h3>Your calendar</h3><p>Lintel shows your next meeting in the notch, with a Join button. It reads the calendars already on your Mac: iCloud, Google, Exchange and others you've added in System Settings. A direct Google Calendar sign-in is coming in an update; Lintel will then ask Google only for read-only access to your calendars, to show your upcoming events on your Mac. Your events are never stored on a server, shared or sold. Read the <a href="privacy.html">Privacy Policy</a>.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ================= GALLERY ================= -->
-<section id="gallery" data-island="The real thing" data-icon="i-spark" data-c="#b8abff">
+<section id="gallery">
   <div class="wrap">
-    <div class="head">
-      <div class="eyebrow">The real thing</div>
-      <h2 class="rise">This is Lintel 1.2.</h2>
-      <p>Straight from the app. Swipe through.</p>
+    <div class="sh">
+      <div><span class="kicker"><svg class="ic"><use href="#i-monitor"/></svg>The real thing</span><h2>This is Lintel 1.2.</h2></div>
+      <div><p>Straight from the app, no mock-ups. Swipe through.</p><div class="gnav"><button id="gPrev" aria-label="Previous screenshot"><svg class="ic"><use href="#i-chevron-left"/></svg></button><button id="gNext" aria-label="Next screenshot"><svg class="ic"><use href="#i-chevron-right"/></svg></button></div></div>
     </div>
     <div class="gallery" id="gal">
       <figure><img src="shots/01-notch.jpg" alt="Lintel's Home in the notch: music, your next meeting and voice typing" loading="lazy" width="1600" height="1000"></figure>
@@ -452,72 +678,89 @@
       <figure><img src="shots/07-everything.jpg" alt="Next up, todos and Grove widgets" loading="lazy" width="1600" height="1000"></figure>
       <figure><img src="shots/08-private.jpg" alt="Lintel's settings: make it yours, keep it private" loading="lazy" width="1600" height="1000"></figure>
     </div>
-    <div class="gnav"><button id="gPrev" aria-label="Previous screenshot"><svg><use href="#i-left"/></svg></button><button id="gNext" aria-label="Next screenshot"><svg><use href="#i-right"/></svg></button></div>
   </div>
 </section>
 
-<!-- ================= PLANS ================= -->
-<section id="plans" data-island="Plans" data-icon="i-tag" data-c="#b8abff">
+<!-- ================= PRICING ================= -->
+<section id="pricing">
   <div class="wrap">
-    <div class="head">
-      <div class="eyebrow">Plans</div>
-      <h2 class="rise">Start free. Unlock what you need.</h2>
-      <p>Every paid plan starts with 7 days free, with every feature unlocked.</p>
+    <div class="sh center">
+      <span class="kicker"><svg class="ic"><use href="#i-calendar"/></svg>Pricing</span>
+      <h2>Start free. Upgrade when it clicks.</h2>
+      <p>Every paid plan starts with 7 days free, with every feature unlocked. Cancel any time in your App Store settings.</p>
     </div>
     <div class="billing"><div class="seg" id="seg"><span class="knob" id="knob"></span><button class="cur" data-b="m">Monthly</button><button data-b="y">Yearly<span class="save">SAVE UP TO 33%</span></button></div></div>
     <div class="plans">
       <div class="card plan" data-reveal style="--c:#c7c7cc">
         <h3>Free</h3><div class="for">The notch, made useful.</div>
         <div class="price"><b>$0</b></div><div class="per">Free, for good</div>
-        <ul><li>The notch island</li><li>Clipboard history</li><li>Launcher</li><li>Music controls</li><li>AI usage limits</li></ul>
+        <a class="btn ghost" data-cta href="#pricing" data-cta-label="Download free">Coming soon</a>
+        <ul><li><svg class="ic"><use href="#i-check"/></svg>The notch island</li><li><svg class="ic"><use href="#i-check"/></svg>Clipboard history</li><li><svg class="ic"><use href="#i-check"/></svg>Launcher</li><li><svg class="ic"><use href="#i-check"/></svg>Music controls</li><li><svg class="ic"><use href="#i-check"/></svg>AI usage limits</li></ul>
       </div>
       <div class="card plan" data-reveal style="--c:var(--green)">
         <h3>Plus</h3><div class="for">Your day at a glance.</div>
         <div class="price"><b data-m="$2.99" data-y="$24.99">$2.99</b><span data-m="/month" data-y="/year">/month</span></div><div class="per" data-m="Billed monthly" data-y="About $2.08 a month">Billed monthly</div>
-        <ul><li>Everything in Free</li><li>Widgets, notes and todos</li><li>Calendar with Join</li><li>Focus that blocks apps and sites</li><li>Shelf, system monitor, volume mixer</li></ul>
+        <a class="btn ghost" data-cta href="#pricing" data-cta-label="Start free trial">Coming soon</a>
+        <ul><li><svg class="ic"><use href="#i-check"/></svg>Everything in Free</li><li><svg class="ic"><use href="#i-check"/></svg>Widgets, notes and todos</li><li><svg class="ic"><use href="#i-check"/></svg>Calendar with Join</li><li><svg class="ic"><use href="#i-check"/></svg>Focus that blocks apps and sites</li><li><svg class="ic"><use href="#i-check"/></svg>Shelf, system monitor, volume mixer</li></ul>
       </div>
-      <div class="card plan hl" data-reveal style="--c:var(--accent)">
-        <h3>Pro <span class="tag pro">Voice &amp; meetings</span></h3><div class="for">Speak, record, present.</div>
+      <div class="card plan hl" data-reveal style="--c:var(--accent2)">
+        <span class="tag pro rec">Most complete for work</span>
+        <h3>Pro</h3><div class="for">Speak, record, present.</div>
         <div class="price"><b data-m="$5.99" data-y="$49.99">$5.99</b><span data-m="/month" data-y="/year">/month</span></div><div class="per" data-m="Billed monthly" data-y="About $4.17 a month">Billed monthly</div>
-        <ul><li>Everything in Plus</li><li>Voice typing in English, Hindi and Bengali</li><li>Meeting notes for both sides of a call</li><li>The teleprompter under the camera</li></ul>
+        <a class="btn primary" data-cta href="#pricing" data-cta-label="Start free trial">Coming soon</a>
+        <ul><li><svg class="ic"><use href="#i-check"/></svg>Everything in Plus</li><li><svg class="ic"><use href="#i-check"/></svg>Voice typing in English, Hindi and Bengali</li><li><svg class="ic"><use href="#i-check"/></svg>Meeting notes for both sides of a call</li><li><svg class="ic"><use href="#i-check"/></svg>The teleprompter under the camera</li></ul>
       </div>
-      <div class="card plan" data-reveal style="--c:#ff7aa8">
-        <h3>Max <span class="tag max">AI</span></h3><div class="for">Apple Intelligence, put to work.</div>
+      <div class="card plan" data-reveal style="--c:#ff9cc6">
+        <h3>Max</h3><div class="for">Apple Intelligence, put to work.</div>
         <div class="price"><b data-m="$9.99" data-y="$79.99">$9.99</b><span data-m="/month" data-y="/year">/month</span></div><div class="per" data-m="Billed monthly" data-y="About $6.67 a month">Billed monthly</div>
-        <ul><li>Everything in Pro</li><li>AI clean-up for dictation</li><li>Meeting summaries and action items</li><li>Questions about any meeting</li></ul>
+        <a class="btn ghost" data-cta href="#pricing" data-cta-label="Start free trial">Coming soon</a>
+        <ul><li><svg class="ic"><use href="#i-check"/></svg>Everything in Pro</li><li><svg class="ic"><use href="#i-check"/></svg>AI clean-up for dictation</li><li><svg class="ic"><use href="#i-check"/></svg>Meeting summaries and action items</li><li><svg class="ic"><use href="#i-check"/></svg>Questions about any meeting</li></ul>
       </div>
     </div>
-    <p class="trial"><b>7 days free</b> with everything unlocked, then the plan you choose. Prices in US dollars; the App Store shows the price for your country. Cancel any time in your App Store settings.</p>
+    <p class="fine">Prices in US dollars; the App Store shows the price for your country. The trial is a one-week introductory offer. Payment is charged to your Apple Account when the trial ends, and subscriptions renew until you cancel.</p>
   </div>
 </section>
 
 <!-- ================= FAQ ================= -->
-<section id="faq" data-island="Questions" data-icon="i-chat" data-c="#8b7bff">
+<section id="faq">
   <div class="wrap">
-    <div class="head"><div class="eyebrow">Questions</div><h2 class="rise">Good to know.</h2></div>
+    <div class="sh center"><span class="kicker"><svg class="ic"><use href="#i-message"/></svg>FAQ</span><h2>Questions, answered.</h2></div>
     <div class="faq" data-reveal>
-      <details><summary>Does my Mac need a notch?</summary><p>No. On a Mac without a notch, or on an external display, Lintel shows a small pill in the same place at the top of the screen. Everything works the same.</p></details>
-      <details><summary>Which Macs and macOS versions does it need?</summary><p>macOS 14 Sonoma or later. Hindi and Bengali need an Apple silicon Mac with macOS 27 or later. The AI features (clean-up, summaries, questions) need macOS 26 or later with Apple Intelligence.</p></details>
-      <details><summary>Does my voice go to a server?</summary><p>No. Speech is recognised on your Mac by Apple's speech models and by the Hindi, Bengali and English language models Lintel downloads once, from Hugging Face, when you add them. Audio is never saved or sent anywhere.</p></details>
-      <details><summary>How is Hindi written?</summary><p>In English letters, the way most people type it: “Yaar, main thoda late ho jaoonga”. If you'd rather have Devanagari, switch it in Settings. Bengali is written in Bengali script, and English as English.</p></details>
-      <details><summary>Which call apps work with meeting notes?</summary><p>Any app that plays the call on your Mac: Zoom, Google Meet in your browser, Microsoft Teams, Slack, FaceTime, Webex and more. Lintel hears your microphone and the call's audio, and keeps only the text.</p></details>
-      <details><summary>Can I try everything before paying?</summary><p>Yes. Every paid plan starts with a 7-day free trial with every feature unlocked. The Free plan stays free.</p></details>
-      <details><summary>Where do I get help?</summary><p>See <a href="support.html" style="color:var(--accent2)">Support</a>, or open an issue on <a href="https://github.com/saswatasg/lintel-app/issues" style="color:var(--accent2)">GitHub</a>. We usually reply within two working days.</p></details>
+      <details><summary>Does my Mac need a notch?<svg class="ic"><use href="#i-plus"/></svg></summary><p>No. On a Mac without a notch, or on an external display, Lintel shows a small pill in the same place at the top of the screen. Everything works the same.</p></details>
+      <details><summary>Which Macs and macOS versions does it need?<svg class="ic"><use href="#i-plus"/></svg></summary><p>macOS 14 Sonoma or later. Hindi and Bengali need an Apple silicon Mac with macOS 27 or later. The AI features (clean-up, summaries, questions) need macOS 26 or later with Apple Intelligence.</p></details>
+      <details><summary>Does my voice go to a server?<svg class="ic"><use href="#i-plus"/></svg></summary><p>No. Speech is recognised on your Mac by Apple's speech models and by the Hindi, Bengali and English language models Lintel downloads once, from Hugging Face, when you add them. Audio is never saved or sent anywhere.</p></details>
+      <details><summary>How is Hindi written?<svg class="ic"><use href="#i-plus"/></svg></summary><p>In English letters, the way most people type it: “Yaar, main thoda late ho jaoonga”. If you'd rather have Devanagari, switch it in Settings. Bengali is written in Bengali script, and English as English.</p></details>
+      <details><summary>Which call apps work with meeting notes?<svg class="ic"><use href="#i-plus"/></svg></summary><p>Any app that plays the call on your Mac: Zoom, Google Meet in your browser, Microsoft Teams, Slack, FaceTime, Webex and more. Lintel hears your microphone and the call's audio, and keeps only the text. No bot joins your call.</p></details>
+      <details><summary>What happens after the free week?<svg class="ic"><use href="#i-plus"/></svg></summary><p>Your plan continues with what it includes, and the App Store charges your Apple Account. Cancel before the week ends and you won't be charged; Lintel keeps working on the Free plan.</p></details>
+      <details><summary>Where do I get help?<svg class="ic"><use href="#i-plus"/></svg></summary><p>See <a href="support.html">Support</a>, or open an issue on <a href="https://github.com/saswatasg/lintel-app/issues">GitHub</a>. We usually reply within two working days.</p></details>
     </div>
   </div>
 </section>
 
-<section class="final" id="get" data-island="Get Lintel" data-icon="i-spark" data-c="#b8abff">
-  <img class="icon" src="icon.png" alt="Lintel app icon" width="110" height="110">
-  <h2 class="rise">Put your notch to work.</h2>
-  <p>Lintel is coming soon to the Mac App Store.</p>
-  <a class="btn primary" href="#plans"><span class="two"><small>COMING SOON TO THE</small>Mac App Store</span></a>
-</section>
+<div class="final">
+  <div class="fcard" data-reveal>
+    <img src="icon.png" alt="" width="84" height="84">
+    <h2>Put your notch to work.</h2>
+    <p>Voice typing, meeting notes, a teleprompter and focus, one glance up. Free for 7 days.</p>
+    <div class="ctas" style="margin-top:0"><a class="btn primary lg" data-cta href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a></div>
+    <ul class="trust"><li><svg class="ic"><use href="#i-check"/></svg>No account needed</li><li><svg class="ic"><use href="#i-check"/></svg>Cancel any time</li><li><svg class="ic"><use href="#i-check"/></svg>macOS 14 or later</li></ul>
+  </div>
+</div>
 </main>
 
-<footer>
-  <div class="wrap"><span>© 2026 Saswata Sengupta</span><span><a href="privacy.html">Privacy Policy</a><a href="support.html">Support</a><a href="https://github.com/saswatasg/lintel-app/issues">Contact</a></span></div>
+<footer class="foot">
+  <div class="wrap">
+    <div class="fgrid">
+      <div><a class="brand" href="#top"><img src="icon.png" alt="" width="30" height="30"><span>Lintel</span></a><p>Voice typing, meeting notes, a teleprompter and focus, in your Mac's notch. Private, on your Mac.</p></div>
+      <div><h6>Product</h6><a href="#voice">Voice typing</a><a href="#meetings">Meeting notes</a><a href="#prompter">Teleprompter</a><a href="#focus">Focus</a><a href="#pricing">Pricing</a></div>
+      <div><h6>Support</h6><a href="support.html">Help</a><a href="#faq">FAQ</a><a href="https://github.com/saswatasg/lintel-app/issues">Contact</a></div>
+      <div><h6>Legal</h6><a href="privacy.html">Privacy Policy</a><a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use</a></div>
+    </div>
+    <div class="fbot"><span>© 2026 Saswata Sengupta</span><span>Mac and Mac App Store are trademarks of Apple Inc.</span></div>
+  </div>
 </footer>
+
+<div class="mcta" id="mcta"><a class="btn primary lg" data-cta href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a></div>
 
 <script src="home.js" defer></script>
 </body>
