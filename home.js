@@ -4,6 +4,10 @@
 
 // When Lintel is live on the Mac App Store, put its link here and every download button switches over.
 const STORE_URL = '';
+// Until then, "Notify me at launch" sends the email to this Kit form (the action URL from Kit's HTML embed).
+const KIT_ACTION = 'https://app.kit.com/forms/10245732/subscriptions';
+const PRE = !STORE_URL && !!KIT_ACTION;
+if (PRE) document.documentElement.classList.add('pre');
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -28,15 +32,81 @@ function say(msg) {
   toast.textContent = msg; toast.classList.add('on');
   clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('on'), 3200);
 }
+// Before launch, every download button leads to the nearest sign-up box instead.
+function focusNotify() {
+  const hero = $('#nHero'), end = $('#nEnd');
+  const target = !hero.closest('.notify').classList.contains('done') && scrollY < innerHeight * 1.2 ? hero
+    : !end.closest('.notify').classList.contains('done') ? end : null;
+  if (!target) { say('You’re on the list. We’ll email you the day Lintel is on the Mac App Store.'); return; }
+  target.closest('.notify').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  setTimeout(() => target.focus({ preventScroll: true }), reduce ? 0 : 500);
+}
 $$('[data-cta]').forEach(a => {
   const pre = a.querySelector('[data-cta-pre]');
   if (STORE_URL) {
     a.href = STORE_URL; a.rel = 'noopener';
     if (pre) pre.textContent = 'DOWNLOAD ON THE';
     if (a.dataset.ctaLabel) a.textContent = a.dataset.ctaLabel;
+  } else if (PRE) {
+    if (a.dataset.ctaLabel) a.textContent = 'Notify me at launch';
+    a.addEventListener('click', e => { e.preventDefault(); focusNotify(); });
   } else if (a.dataset.ctaLabel || a.closest('#pricing')) {
     a.addEventListener('click', e => { e.preventDefault(); say('Lintel is in Apple’s review now and arrives on the Mac App Store soon.'); });
   }
+});
+
+/* ---------- launch sign-up ---------- */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const DONE_KEY = 'lintel-notify';
+const okText = 'Almost there: check your inbox and confirm your email. We’ll write once, the day Lintel is on the Mac App Store.';
+function showMsg(form, kind, text) {
+  const m = form.closest('.ctas').nextElementSibling;
+  if (!m || !m.hasAttribute('data-msg')) return;
+  m.className = 'nmsg ' + kind;
+  m.innerHTML = (kind === 'ok' ? ic('circle-check') : '') + esc(text);
+}
+function markDone(text) {
+  $$('[data-notify]').forEach(f => { f.classList.add('done'); showMsg(f, 'ok', text); });
+}
+try { if (PRE && localStorage.getItem(DONE_KEY)) markDone('You’re on the list. We’ll email you the day Lintel is on the Mac App Store.'); } catch (e) { /* storage blocked */ }
+// Kit sends people back here after they confirm their email.
+if (location.hash === '#confirmed') {
+  history.replaceState(null, '', location.pathname + location.search);
+  try { localStorage.setItem(DONE_KEY, '1'); } catch (e) { /* storage blocked */ }
+  if (PRE) markDone('You’re confirmed. We’ll email you the day Lintel is on the Mac App Store.');
+  setTimeout(() => say('You’re confirmed. We’ll email you the day Lintel is on the Mac App Store.'), 600);
+}
+async function subscribe(email) {
+  const body = new URLSearchParams({ email_address: email });
+  try {
+    const r = await fetch(KIT_ACTION, { method: 'POST', headers: { Accept: 'application/json' }, body });
+    const j = await r.json().catch(() => ({}));
+    return r.ok && (!j.status || j.status === 'success');
+  } catch (e) {
+    // If the browser won't let us read Kit's reply, send it anyway: Kit still records the sign-up.
+    try { await fetch(KIT_ACTION, { method: 'POST', mode: 'no-cors', body }); return true; } catch (e2) { return false; }
+  }
+}
+$$('[data-notify]').forEach(form => {
+  const input = form.querySelector('input[type=email]'), btn = form.querySelector('button');
+  input.addEventListener('input', () => { form.classList.remove('err'); });
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = input.value.trim();
+    if (form.company.value) { markDone(okText); return; }
+    if (!EMAIL_RE.test(email)) {
+      form.classList.add('err'); showMsg(form, 'bad', 'Please enter a valid email address.'); input.focus(); return;
+    }
+    btn.disabled = true; btn.textContent = 'Sending…';
+    const ok = await subscribe(email);
+    btn.disabled = false; btn.textContent = 'Notify me at launch';
+    if (ok) {
+      try { localStorage.setItem(DONE_KEY, '1'); } catch (e2) { /* storage blocked */ }
+      markDone(okText);
+    } else {
+      showMsg(form, 'bad', 'That didn’t go through. Please try again in a moment.');
+    }
+  });
 });
 
 /* ---------- nav ---------- */

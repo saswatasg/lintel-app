@@ -805,3 +805,27 @@ h2{margin:0;font-size:clamp(36px,4.8vw,62px);line-height:1.04;letter-spacing:-.0
 .dfiles i .ic{width:22px;height:22px;stroke-width:2}
 .fgrid a.brand{display:flex;padding:0;color:var(--ink)}
 @media (max-width:720px){.device{aspect-ratio:820/560;overflow:hidden;border-radius:18px;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 40px 80px -30px rgba(0,0,0,.9)}.base{display:none}.dfiles{display:none}}
+/* launch sign-up */
+.notify{display:none;align-items:center;gap:8px;width:min(500px,100%);height:58px;padding:6px 6px 6px 16px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--line2);transition:border-color .2s,box-shadow .2s,background .2s;text-align:left}
+.notify:focus-within{border-color:rgba(184,171,255,.7);box-shadow:0 0 0 4px rgba(139,123,255,.18);background:rgba(255,255,255,.08)}
+.notify>.ic{width:18px;height:18px;color:var(--ink3)}
+.notify input[type=email]{flex:1;min-width:0;height:100%;background:none;border:0;outline:0;color:var(--ink);font:500 16px var(--font)}
+.notify input[type=email]::placeholder{color:var(--ink3)}
+.notify .btn{height:46px;border-radius:10px;padding:0 18px;font-size:15.5px}
+.notify .btn[disabled]{opacity:.7;cursor:default;transform:none}
+.notify.err{border-color:rgba(255,91,91,.75)}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
+.nmsg{margin:14px auto 0;font-size:15px;color:var(--ink2);display:flex;align-items:center;justify-content:center;gap:8px;max-width:620px}
+.nmsg:empty{display:none}
+.nmsg.ok{color:#8fe8ae}.nmsg.bad{color:#ff9a9a}
+.nmsg .ic{width:18px;height:18px;flex:none}
+html.pre .notify{display:flex}
+html.pre [data-store]{display:none}
+html.pre .only-live,html:not(.pre) .only-pre{display:none!important}
+.notify.done{display:none!important}
+@media (max-width:720px){
+  .notify{height:auto;flex-wrap:wrap;padding:8px 8px 8px 14px;gap:6px}
+  .notify input[type=email]{height:44px;flex-basis:calc(100% - 30px)}
+  .notify .btn{width:100%;justify-content:center}
+}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

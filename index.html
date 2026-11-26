@@ -133,9 +133,17 @@
   <h1>Your notch,<br><span class="grad">put to work.</span></h1>
   <p class="sub">Voice typing in English, Hindi and Bengali. Notes from every meeting. A teleprompter under your camera. Focus that blocks distractions. All in your Mac's notch, and all on your Mac.</p>
   <div class="ctas">
-    <a class="btn primary lg" data-cta href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a>
+    <a class="btn primary lg" data-cta data-store href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a>
+    <form class="notify" data-notify novalidate>
+      <label class="sr" for="nHero">Your email address</label>
+      <svg class="ic"><use href="#i-mail"/></svg>
+      <input id="nHero" type="email" name="email_address" placeholder="you@company.com" autocomplete="email" required>
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn primary" type="submit">Notify me at launch</button>
+    </form>
     <a class="btn ghost lg" href="#demo" id="watch"><svg class="ic"><use href="#i-circle-play"/></svg>Watch the demo</a>
   </div>
+  <p class="nmsg" data-msg role="status" aria-live="polite"></p>
   <ul class="trust">
     <li><svg class="ic"><use href="#i-check"/></svg>7 days free, every feature</li>
     <li><svg class="ic"><use href="#i-check"/></svg>No account needed</li>
@@ -741,8 +749,17 @@
   <div class="fcard" data-reveal>
     <img src="icon.png" alt="" width="84" height="84">
     <h2>Put your notch to work.</h2>
-    <p>Voice typing, meeting notes, a teleprompter and focus, one glance up. Free for 7 days.</p>
-    <div class="ctas" style="margin-top:0"><a class="btn primary lg" data-cta href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a></div>
+    <p><span class="only-live">Voice typing, meeting notes, a teleprompter and focus, one glance up. Free for 7 days.</span><span class="only-pre">Lintel is in Apple’s review now. Leave your email and we’ll tell you the day it’s on the Mac App Store, with 7 days free.</span></p>
+    <div class="ctas" style="margin-top:0"><a class="btn primary lg" data-cta data-store href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a>
+      <form class="notify" data-notify novalidate id="notifyEnd">
+        <label class="sr" for="nEnd">Your email address</label>
+        <svg class="ic"><use href="#i-mail"/></svg>
+        <input id="nEnd" type="email" name="email_address" placeholder="you@company.com" autocomplete="email" required>
+        <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn primary" type="submit">Notify me at launch</button>
+      </form>
+    </div>
+    <p class="nmsg" data-msg role="status" aria-live="polite"></p>
     <ul class="trust"><li><svg class="ic"><use href="#i-check"/></svg>No account needed</li><li><svg class="ic"><use href="#i-check"/></svg>Cancel any time</li><li><svg class="ic"><use href="#i-check"/></svg>macOS 14 or later</li></ul>
   </div>
 </div>
@@ -760,7 +777,7 @@
   </div>
 </footer>
 
-<div class="mcta" id="mcta"><a class="btn primary lg" data-cta href="#pricing"><span class="two"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span></a></div>
+<div class="mcta" id="mcta"><a class="btn primary lg" data-cta href="#pricing"><span class="two only-live"><small data-cta-pre>COMING SOON TO THE</small>Mac App Store</span><span class="only-pre" style="display:flex;align-items:center;gap:10px"><svg class="ic"><use href="#i-mail"/></svg>Notify me at launch</span></a></div>
 
 <script src="home.js" defer></script>
 </body>
