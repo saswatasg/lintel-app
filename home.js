@@ -23,7 +23,7 @@ const onView = (el, on, off, threshold = .3) =>
 const ic = (id, style = '') => `<svg class="ic"${style ? ` style="${style}"` : ''}><use href="#i-${id}"/></svg>`;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-/* ---------- download buttons ---------- */
+/* ---------- notices ---------- */
 const toast = document.createElement('div');
 toast.className = 'toast'; toast.setAttribute('role', 'status');
 document.body.appendChild(toast);
@@ -32,7 +32,8 @@ function say(msg) {
   toast.textContent = msg; toast.classList.add('on');
   clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('on'), 3200);
 }
-// Before launch, every download button leads to the nearest sign-up box instead.
+
+/* ---------- download buttons and the launch sign-up ---------- */
 function focusNotify() {
   const hero = $('#nHero'), end = $('#nEnd');
   const target = !hero.closest('.notify').classList.contains('done') && scrollY < innerHeight * 1.2 ? hero
@@ -54,8 +55,6 @@ $$('[data-cta]').forEach(a => {
     a.addEventListener('click', e => { e.preventDefault(); say('Lintel is in Apple’s review now and arrives on the Mac App Store soon.'); });
   }
 });
-
-/* ---------- launch sign-up ---------- */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const DONE_KEY = 'lintel-notify';
 const okText = 'Almost there: check your inbox and confirm your email. We’ll write once, the day Lintel is on the Mac App Store.';
@@ -65,11 +64,8 @@ function showMsg(form, kind, text) {
   m.className = 'nmsg ' + kind;
   m.innerHTML = (kind === 'ok' ? ic('circle-check') : '') + esc(text);
 }
-function markDone(text) {
-  $$('[data-notify]').forEach(f => { f.classList.add('done'); showMsg(f, 'ok', text); });
-}
+function markDone(text) { $$('[data-notify]').forEach(f => { f.classList.add('done'); showMsg(f, 'ok', text); }); }
 try { if (PRE && localStorage.getItem(DONE_KEY)) markDone('You’re on the list. We’ll email you the day Lintel is on the Mac App Store.'); } catch (e) { /* storage blocked */ }
-// Kit sends people back here after they confirm their email.
 if (location.hash === '#confirmed') {
   history.replaceState(null, '', location.pathname + location.search);
   try { localStorage.setItem(DONE_KEY, '1'); } catch (e) { /* storage blocked */ }
@@ -89,23 +85,17 @@ async function subscribe(email) {
 }
 $$('[data-notify]').forEach(form => {
   const input = form.querySelector('input[type=email]'), btn = form.querySelector('button');
-  input.addEventListener('input', () => { form.classList.remove('err'); });
+  input.addEventListener('input', () => form.classList.remove('err'));
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const email = input.value.trim();
     if (form.company.value) { markDone(okText); return; }
-    if (!EMAIL_RE.test(email)) {
-      form.classList.add('err'); showMsg(form, 'bad', 'Please enter a valid email address.'); input.focus(); return;
-    }
+    if (!EMAIL_RE.test(email)) { form.classList.add('err'); showMsg(form, 'bad', 'Please enter a valid email address.'); input.focus(); return; }
     btn.disabled = true; btn.textContent = 'Sending…';
     const ok = await subscribe(email);
     btn.disabled = false; btn.textContent = 'Notify me at launch';
-    if (ok) {
-      try { localStorage.setItem(DONE_KEY, '1'); } catch (e2) { /* storage blocked */ }
-      markDone(okText);
-    } else {
-      showMsg(form, 'bad', 'That didn’t go through. Please try again in a moment.');
-    }
+    if (ok) { try { localStorage.setItem(DONE_KEY, '1'); } catch (e2) { /* storage blocked */ } markDone(okText); }
+    else showMsg(form, 'bad', 'That didn’t go through. Please try again in a moment.');
   });
 });
 
@@ -128,16 +118,45 @@ burger.addEventListener('click', () => setSheet(!sheet.classList.contains('open'
 $$('a', sheet).forEach(a => a.addEventListener('click', () => setSheet(false)));
 addEventListener('keydown', e => { if (e.key === 'Escape') { setDD(false); setSheet(false); } });
 
-/* ---------- reveals ---------- */
+/* ---------- reveals, headings, numbers ---------- */
+$$('h2.rise').forEach(h => {
+  h.innerHTML = h.textContent.trim().split(/\s+/)
+    .map((w, i) => `<span class="w"><span style="transition-delay:${i * 55}ms">${esc(w)}</span></span>`).join(' ');
+});
+function countUp(el) {
+  const to = +el.dataset.count, from = +(el.dataset.from || 0), suf = el.dataset.suffix || '';
+  if (reduce) { el.textContent = to + suf; return; }
+  const t0 = performance.now(), d = 1400;
+  const step = t => {
+    const p = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (to - from) * e) + suf;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
 const revealIO = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
+  if (!e.isIntersecting) return;
+  const el = e.target;
+  el.classList.add('in'); revealIO.unobserve(el);
+  $$('[data-count]', el).forEach(countUp);
+  // Once it has arrived, hand the element back to its own hover transitions.
+  if (el.hasAttribute('data-reveal')) setTimeout(() => { el.removeAttribute('data-reveal'); el.style.transitionDelay = ''; }, 1500 + (parseFloat(el.style.transitionDelay) || 0));
 }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
 $$('[data-reveal]').forEach(el => {
   const sib = [...el.parentElement.children].filter(c => c.hasAttribute('data-reveal'));
   const i = sib.indexOf(el);
-  if (i > 0) el.style.transitionDelay = Math.min(i, 5) * 70 + 'ms';
+  if (i > 0) el.style.transitionDelay = Math.min(i, 6) * 70 + 'ms';
   revealIO.observe(el);
 });
+$$('h2.rise').forEach(el => revealIO.observe(el));
+// A soft light follows the pointer across cards.
+addEventListener('pointermove', e => {
+  const c = e.target.closest && e.target.closest('.card');
+  if (!c) return;
+  const r = c.getBoundingClientRect();
+  c.style.setProperty('--mx', e.clientX - r.left + 'px');
+  c.style.setProperty('--my', e.clientY - r.top + 'px');
+}, { passive: true });
 
 /* ---------- trees ---------- */
 const treeSVG = (stage, h) => stage === 0
@@ -146,9 +165,8 @@ const treeSVG = (stage, h) => stage === 0
 $$('[data-tree]').forEach(el => { const [s, h] = el.dataset.tree.split(':').map(Number); el.innerHTML = treeSVG(s, h); });
 const DAYS = ['T', 'F', 'S', 'S', 'M', 'T', 'W'];
 $$('[data-garden]').forEach(g => {
-  const k = +(g.dataset.size || 1);
   g.innerHTML = g.dataset.garden.split(',').map(Number)
-    .map((s, i) => `<div class="d"${i === 6 ? ' style="color:#fff"' : ''}>${treeSVG(s, Math.round((s ? 28 + s * 5 : 26) * k))}<span>${DAYS[i]}</span></div>`).join('');
+    .map((s, i) => `<div class="d"${i === 6 ? ' style="color:#fff"' : ''}>${treeSVG(s, s ? 28 + s * 5 : 26)}<span>${DAYS[i]}</span></div>`).join('');
 });
 
 /* ---------- waveforms ---------- */
@@ -164,10 +182,7 @@ function waveLoop(t) {
   for (const w of waves) {
     if (!w.live) continue;
     any = true;
-    w.bars.forEach((b, i) => {
-      const v = Math.abs(Math.sin(t / 170 + i * .9 + w.phase) * Math.sin(t / 430 + i * 1.7));
-      b.style.height = 16 + v * 84 + '%';
-    });
+    w.bars.forEach((b, i) => { b.style.height = 16 + Math.abs(Math.sin(t / 170 + i * .9 + w.phase) * Math.sin(t / 430 + i * 1.7)) * 84 + '%'; });
   }
   waveRAF = any ? requestAnimationFrame(waveLoop) : 0;
 }
@@ -176,6 +191,73 @@ function setWave(w, live) {
   if (!live) w.bars.forEach(b => (b.style.height = '22%'));
   else if (!waveRAF) waveRAF = requestAnimationFrame(waveLoop);
 }
+
+/* ================= AI usage limits (in the notch and in the tile) ================= */
+const PROVS = [
+  { n: 'Claude', plan: 'Pro', pc: '#e8916f', icon: 'terminal', bg: 'linear-gradient(135deg,#e8916f,#c0583a)', rows: [['c5', '5-hour', 'Resets in 4h 36m'], ['cw', 'Weekly', 'Resets in 2d 5h']] },
+  { n: 'Codex', plan: 'Plus', pc: '#5ad1cc', icon: 'code', bg: 'linear-gradient(135deg,#46464f,#18181d)', rows: [['x5', '5-hour', 'Resets in 2h 10m'], ['xw', 'Weekly', 'Resets in 13h 27m']] },
+  { n: 'OpenCode Go', plan: 'Go', pc: '#ffb340', icon: 'braces', bg: 'linear-gradient(135deg,#ffcf5c,#e8930c)', rows: [['ow', 'Weekly', 'Resets Monday']] },
+];
+const LIM = { c5: 86, cw: 57, x5: 94, xw: 82, ow: 64 };
+const provHTML = (p, wrap) => `<div${wrap ? ` class="${wrap}"` : ''}><div class="prov"><span class="lg" style="background:${p.bg}">${ic(p.icon)}</span><b>${p.n}</b><span class="pl" style="background:color-mix(in srgb,${p.pc} 20%,transparent);color:${p.pc}">${p.plan}</span><span class="lv"><i></i>Live</span></div>` +
+  p.rows.map(([k, l, rs]) => `<div class="lrow"><div class="t">${l}<b><span data-lim="${k}">${LIM[k]}</span>%<small>left</small></b></div><div class="lbar" data-limbar="${k}"><i style="width:${LIM[k]}%"></i></div><div class="rs" data-limrs="${k}" data-rs="${rs}">${rs}</div></div>`).join('') + '</div>';
+$$('[data-limits]').forEach(el => { el.innerHTML = PROVS.map(p => provHTML(p, el.classList.contains('pane') ? 'cx' : '')).join(''); });
+function limRender() {
+  Object.entries(LIM).forEach(([k, v]) => {
+    $$(`[data-lim="${k}"]`).forEach(e => (e.textContent = v));
+    $$(`[data-limbar="${k}"]`).forEach(e => { e.querySelector('i').style.width = v + '%'; e.classList.toggle('warn', v < 30); });
+    $$(`[data-limrs="${k}"]`).forEach(e => { e.innerHTML = esc(e.dataset.rs) + (v < 30 ? ' · <em>runs out ~3:54 AM</em>' : ''); });
+  });
+}
+let limFast = false;
+setInterval(() => {
+  LIM.c5 -= limFast ? 3 : (Math.random() < .6 ? 1 : 0); if (LIM.c5 < 8) LIM.c5 = 92;
+  if (Math.random() < .3) LIM.cw = LIM.cw > 20 ? LIM.cw - 1 : 70;
+  if (Math.random() < .4) LIM.x5 = LIM.x5 > 20 ? LIM.x5 - 1 : 96;
+  if (Math.random() < .2) LIM.xw = LIM.xw > 20 ? LIM.xw - 1 : 88;
+  if (Math.random() < .2) LIM.ow = LIM.ow > 20 ? LIM.ow - 1 : 72;
+  limRender();
+}, 900);
+
+/* ================= System monitor (in the notch and in the tile) ================= */
+const cpuHTML = `<div class="cpu"><div class="hd"><span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:6px">${ic('cpu', 'width:13px;height:13px')}CPU</span><b><span data-sys="cpu">34</span><small>%</small></b></div>
+  <div class="p-s" style="font-size:11px">user <span data-sys="user">24</span>% · system <span data-sys="sysp">10</span>%</div>
+  <svg class="spark" viewBox="0 0 200 40" preserveAspectRatio="none"><path data-sys="area" fill="rgba(52,199,89,.15)"/><path data-sys="line" fill="none" stroke="#34c759" stroke-width="2" stroke-linejoin="round"/></svg>
+  <div class="cores" data-sys="cores">${'<i><b></b></i>'.repeat(10)}</div>
+  <div class="sysrow"><div>GPU<b class="g"><span data-sys="gpu">24</span>%</b></div><div>NETWORK<b class="net">${ic('arrow-down')}<span data-sys="down">3.6 MB/s</span>${ic('arrow-up')}<span data-sys="up">207 KB/s</span></b></div></div></div>`;
+const memHTML = `<div class="mem"><div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:rgba(255,255,255,.55)"><span style="display:flex;align-items:center;gap:6px">${ic('memory', 'width:13px;height:13px')}Memory</span><span class="tag ok">Normal</span></div>
+  <div style="display:flex;justify-content:space-between;margin-top:6px"><b><span data-sys="mem">11.0</span> GB of 16.0 GB</b><span class="p-s" style="font-size:11px">swap 1.2 GB</span></div>
+  <div class="segbar"><i data-sys="app" style="width:46%;background:#8b7bff"></i><i style="width:15%;background:#ffb340"></i><i style="width:8%;background:#ff6fae"></i></div>
+  <div class="lg3"><span style="--c:#8b7bff">App</span><span style="--c:#ffb340">Wired</span><span style="--c:#ff6fae">Compressed</span></div>
+  <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;font-weight:600;color:rgba(255,255,255,.55)"><span style="display:flex;align-items:center;gap:6px">${ic('hard-drive', 'width:13px;height:13px')}Disk</span><span>233 GB free</span></div>
+  <div class="segbar"><i style="width:52%;background:#4c8dff"></i></div>
+  <div style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:650;margin-top:8px">${ic('battery-medium', 'width:16px;height:16px;color:#34c759')}82% <span class="p-s" style="font-size:11px">4h 35m left</span></div></div>`;
+const TOP = [['Photos', '#ff9f0a', 27], ['Safari', '#4c8dff', 15], ['Messages', '#34c759', 6], ['Mail', '#61b6ff', 3], ['Music', '#ff2d55', 2]];
+const topHTML = `<div class="topapps"><div class="lab">Top apps <span class="fil" style="margin:0"><b class="on">CPU</b><b>Memory</b></span></div>` +
+  TOP.map(([n, c, v], i) => `<div style="--w:${v * 3}%"><i style="background:${c}"></i>${n}<em data-top="${i}">${v}%</em></div>`).join('') + '</div>';
+$$('[data-system]').forEach(el => (el.innerHTML = `<div class="cx" style="flex:1.25">${cpuHTML}</div><div class="cx">${memHTML}</div><div class="cx">${topHTML}</div>`));
+$$('[data-system-tile]').forEach(el => (el.innerHTML = `<div>${cpuHTML}</div><div>${memHTML}</div>`));
+const cpuHist = Array.from({ length: 40 }, () => 25 + Math.random() * 15);
+let sysLoad = false, cpuNow = 34, gpuNow = 24, memNow = 11.0;
+const pathOf = (a, h) => a.map((v, i) => `${i ? 'L' : 'M'}${(i / (a.length - 1) * 200).toFixed(1)} ${(h - v / 100 * (h - 4) - 2).toFixed(1)}`).join(' ');
+function sysTick() {
+  const target = sysLoad ? 78 : 32;
+  cpuNow = clamp(cpuNow + (target - cpuNow) * .25 + (Math.random() - .5) * 14, 4, 97);
+  gpuNow = clamp(gpuNow + (Math.random() - .5) * 8 + (sysLoad ? 2 : -1), 6, 90);
+  memNow = clamp(memNow + (Math.random() - .5) * .2 + (sysLoad ? .05 : -.02), 10.4, 13.2);
+  cpuHist.push(cpuNow); cpuHist.shift();
+  const d = pathOf(cpuHist, 40);
+  const set = (k, v) => $$(`[data-sys="${k}"]`).forEach(e => (e.textContent = v));
+  set('cpu', Math.round(cpuNow)); set('user', Math.round(cpuNow * .7)); set('sysp', Math.round(cpuNow * .3));
+  set('gpu', Math.round(gpuNow)); set('mem', memNow.toFixed(1));
+  set('down', (1 + Math.random() * 5).toFixed(1) + ' MB/s'); set('up', Math.round(80 + Math.random() * 300) + ' KB/s');
+  $$('[data-sys="line"]').forEach(e => e.setAttribute('d', d));
+  $$('[data-sys="area"]').forEach(e => e.setAttribute('d', d + ' L200 40 L0 40 Z'));
+  $$('[data-sys="app"]').forEach(e => (e.style.width = (memNow / 16 * 100 - 23).toFixed(1) + '%'));
+  $$('[data-sys="cores"]').forEach(c => [...c.children].forEach(i => (i.firstChild.style.height = clamp(cpuNow + (Math.random() - .5) * 60, 4, 100) + '%')));
+  TOP.forEach((t, i) => { const v = clamp(t[2] + Math.round((Math.random() - .5) * 4) + (sysLoad && i === 0 ? 30 : 0), 1, 90); $$(`[data-top="${i}"]`).forEach(e => { e.textContent = v + '%'; e.parentElement.style.setProperty('--w', v * 2.4 + '%'); }); });
+}
+sysTick(); setInterval(sysTick, 800);
 
 /* ================= HERO: a Mac with Lintel in its notch ================= */
 const device = $('#device');
@@ -188,7 +270,6 @@ function fit() {
 }
 fit();
 addEventListener('resize', fit);
-
 const now = new Date();
 $('#dClock').textContent = now.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '') + ' ' +
   now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).replace(/\s?[AP]M/, '');
@@ -207,13 +288,13 @@ function islSet(mode) {
 }
 const TABS = {
   home: ['Home', longDate, 'Rest the pointer on the notch: your music, your next meeting and your tools, one glance up.'],
-  meetings: ['Meetings', '', 'Both sides of the call, written as you talk. Lines in Bengali are rewritten in Bengali script.'],
+  meetings: ['Meetings', '', 'Both sides of the call, written down as you talk, in English, Hindi or Bengali.'],
   todos: ['Todos', '5 today', 'Your todos, synced with Reminders, a glance away.'],
   grove: ['Grove', '7-day streak', 'A tree grows while you focus, and distracting apps and sites stay blocked.'],
-  usage: ['AI limits', 'Updated just now', 'See how much is left on your AI coding plans, with a heads-up before you run out.'],
+  usage: ['Limits', '', 'See how much is left on Claude, Codex and OpenCode Go, live, with a heads-up before you run out.'],
   clipboard: ['Clipboard', '6 items', 'Everything you copied, a click away. Copies marked as passwords are never kept.'],
-  apps: ['Launcher', 'Apps, folders, websites and Shortcuts', 'Your apps, folders, websites and Shortcuts, one click away.'],
-  shelf: ['Shelf', '3 files', 'Drop files on the notch and drag them out later, or AirDrop them.'],
+  system: ['System', '', 'CPU, GPU, memory, disk, network and battery, and which apps use the most, one glance up.'],
+  shelf: ['Shelf', '4 items', 'Drop files on the notch, then drag them out, copy them or AirDrop them.'],
 };
 function tabSet(t) {
   curTab = t;
@@ -222,7 +303,7 @@ function tabSet(t) {
   $('#iTitle').textContent = TABS[t][0];
   $('#iSub').textContent = TABS[t][1];
 }
-const WINS = ['wMail', 'wCall', 'wBrowser', 'wNotes'];
+const WINS = ['wMail', 'wCall', 'wBrowser', 'wTerm', 'wFinder'];
 const wins = (...ids) => WINS.forEach(id => $('#' + id).classList.toggle('on', ids.includes(id)));
 const dCur = $('#dCur');
 const cur = (x, y) => { dCur.style.left = x + 'px'; dCur.style.top = y + 'px'; };
@@ -231,12 +312,13 @@ const iWave = makeWave($('#iWave'), 16);
 
 let cleanups = [];
 const every = (fn, ms) => { const id = setInterval(fn, ms); cleanups.push(() => clearInterval(id)); };
-const clean = () => { cleanups.forEach(f => f()); cleanups = []; setWave(iWave, false); };
-
+const clean = () => { cleanups.forEach(f => f()); cleanups = []; setWave(iWave, false); limFast = false; sysLoad = false; };
 function resetDesk() {
   $('#dSay').classList.remove('on'); $('#dKeys').classList.remove('on');
   $('#wCall').classList.remove('presenting');
   $$('#wCall .ct').forEach(t => t.classList.remove('talk'));
+  $('#pAirdrop').classList.remove('hot');
+  const fly = $('#dFly'); fly.style.opacity = 0;
 }
 
 async function sHome(ok) {
@@ -254,9 +336,7 @@ async function sHome(ok) {
   cur(470, 210);
 }
 async function sVoice(ok) {
-  resetDesk();
-  islSet('closed');
-  wins('wMail');
+  resetDesk(); islSet('closed'); wins('wMail');
   const body = $('#dMailBody');
   body.innerHTML = '<span class="ph">Write your message…</span>';
   cur(560, 470);
@@ -277,42 +357,31 @@ async function sVoice(ok) {
   await sleep(700); if (!ok()) return;
   $('#dSay').classList.remove('on');
   await click();
-  $('#dKeys').classList.add('on');
+  const keys = $('#dKeys'); keys.innerHTML = '<b>⌘</b><b>V</b>'; keys.classList.add('on');
   await sleep(500); if (!ok()) return;
   body.textContent = words.join(' ');
   body.classList.remove('flash'); void body.offsetWidth; body.classList.add('flash');
-  await sleep(500); $('#dKeys').classList.remove('on');
+  await sleep(500); keys.classList.remove('on');
   await sleep(900); if (!ok()) return;
   islSet('closed');
 }
 async function sMeetings(ok) {
-  resetDesk();
-  wins('wCall');
-  tabSet('meetings');
-  const lns = $$('#Ltabs [data-pane=meetings] .ln'), ref = $('#pRef span');
+  resetDesk(); wins('wCall'); tabSet('meetings');
+  const lns = $$('#Ltabs [data-pane=meetings] .ln');
   lns.forEach(l => l.classList.remove('in'));
-  ref.textContent = 'Aami report ta Friday er modhye pathiye debo.'; ref.removeAttribute('lang');
   cur(980, 600);
   islSet('tabs');
   let secs = 42; every(() => ($('#pMeetClock').textContent = fmt(++secs)), 1000);
-  const talk = (who) => { $('#dThem').classList.toggle('talk', who === 'them'); $('#dMe').classList.toggle('talk', who === 'me'); };
-  const seq = [['them', 0, 700], ['me', 1, 1500], ['them', 2, 1500]];
-  for (const [who, i, wait] of seq) {
+  const talk = who => { $('#dThem').classList.toggle('talk', who === 'them'); $('#dMe').classList.toggle('talk', who === 'me'); };
+  for (const [who, i, wait] of [['them', 0, 700], ['me', 1, 1500], ['them', 2, 1600]]) {
     talk(who); await sleep(wait); if (!ok()) return;
     lns[i].classList.add('in');
   }
   talk(null);
-  await sleep(900); if (!ok()) return;
-  ref.classList.add('fade'); await sleep(380); if (!ok()) return;
-  ref.textContent = 'আমি রিপোর্টটা ফ্রাইডের মধ্যে পাঠিয়ে দেব।'; ref.setAttribute('lang', 'bn');
-  ref.classList.remove('fade');
 }
 function sPrompter(ok) {
-  resetDesk();
-  wins('wCall'); $('#wCall').classList.add('presenting');
-  $('#dMe').classList.add('talk');
-  islSet('prompt');
-  cur(980, 640);
+  resetDesk(); wins('wCall'); $('#wCall').classList.add('presenting'); $('#dMe').classList.add('talk');
+  islSet('prompt'); cur(980, 640);
   const txt = $('#iPTxt'), lines = [...txt.children], LH = 40.5;
   let off = -30, last = performance.now(), secs = 35;
   every(() => ($('#iPT').textContent = fmt(secs--)), 1000);
@@ -327,12 +396,8 @@ function sPrompter(ok) {
   };
   requestAnimationFrame(frame);
 }
-async function sGrove(ok) {
-  resetDesk();
-  wins('wBrowser');
-  tabSet('grove');
-  islSet('tabs');
-  cur(700, 600);
+function sGrove(ok) {
+  resetDesk(); wins('wBrowser'); tabSet('grove'); islSet('tabs'); cur(700, 600);
   let left = 31 * 60 + 50, p = .64;
   const step = () => {
     $('#pGrove').textContent = fmt(left); $('#dLeft').textContent = fmt(left) + ' left';
@@ -341,38 +406,74 @@ async function sGrove(ok) {
   };
   step(); every(step, 1000);
 }
-async function sClipboard(ok) {
-  resetDesk();
-  wins('wNotes');
-  tabSet('clipboard');
-  islSet('tabs');
-  const sel = $('#dSel'); sel.style.background = 'transparent';
-  cur(470, 440);
+async function sUsage(ok) {
+  resetDesk(); wins('wTerm'); tabSet('usage'); islSet('tabs'); cur(1000, 640);
+  limFast = true;
+  const term = $('#dTerm');
+  term.innerHTML = '';
+  const lines = [
+    ['p', '~/lintel $ claude'], ['dim', 'Welcome back. 5-hour window: 86% left'], ['p', '› Add a shortcut editor to Settings'],
+    ['dim', '  Reading SettingsView.swift, Shortcuts.swift…'], ['ok', '  ✓ Updated 3 files'], ['dim', '  Running the tests…'], ['ok', '  ✓ 48 tests passed'],
+    ['p', '› Now polish the onboarding copy'], ['dim', '  Thinking…'],
+  ];
+  for (const [c, t] of lines) {
+    await sleep(520); if (!ok()) return;
+    term.insertAdjacentHTML('beforeend', `<div class="${c}">${esc(t)}</div>`);
+    requestAnimationFrame(() => term.lastElementChild.classList.add('in'));
+  }
+}
+async function sShelf(ok) {
+  resetDesk(); islSet('closed'); wins('wFinder'); tabSet('shelf');
+  const box = $('#pShelf');
+  box.querySelectorAll('.f.new').forEach(f => f.remove());
+  const file = $('#dFile'), fly = $('#dFly');
+  const fx = 310 + 130 + 18 + 2 * (82 + 16) + 10, fy = 330 + 36 + 18;
+  cur(fx + 30, fy + 30);
+  await sleep(1000); if (!ok()) return;
+  await click();
+  fly.style.transition = 'none'; fly.style.left = fx + 'px'; fly.style.top = fy + 'px'; fly.style.transform = 'none';
+  void fly.offsetWidth; fly.style.transition = ''; fly.style.opacity = 1;
+  file.style.opacity = .35;
+  await sleep(80);
+  fly.style.left = '569px'; fly.style.top = '6px'; fly.style.transform = 'scale(.55)';
+  cur(600, 30);
+  await sleep(800); if (!ok()) return;
+  islSet('tabs'); fly.style.opacity = 0; file.style.opacity = 1;
+  await sleep(450); if (!ok()) return;
+  box.insertAdjacentHTML('beforeend', '<div class="f new"><span class="thumb" style="background:linear-gradient(135deg,#7aa7ff,#2d5be3)"></span>Launc…ter.png</div>');
   await sleep(900); if (!ok()) return;
-  sel.style.background = '';
-  await sleep(500); if (!ok()) return;
-  const keys = $('#dKeys'); keys.innerHTML = '<b>⌘</b><b>C</b>'; keys.classList.add('on');
-  await sleep(600); keys.classList.remove('on'); if (!ok()) return;
-  const box = $('#pClip');
-  box.insertAdjacentHTML('afterbegin', `<div class="cc new"><div class="src"><i style="background:#ffd34d"></i>Notes<em>now</em></div><b>Studio address: 18 Harbour Lane, 2nd floor</b></div>`);
-  while (box.children.length > 5) box.lastElementChild.remove();
-  await sleep(400); keys.innerHTML = '<b>⌘</b><b>V</b>';
-  cur(560, 180);
+  cur(895, 150);
+  await sleep(950); if (!ok()) return;
+  await click(); $('#pAirdrop').classList.add('hot');
+}
+function sSystem(ok) {
+  resetDesk(); wins('wTerm'); tabSet('system'); islSet('tabs'); cur(1000, 640);
+  const term = $('#dTerm');
+  term.innerHTML = '<div class="p in">~/lintel $ swift build -c release</div>';
+  sysLoad = true;
+  let n = 0;
+  every(() => {
+    n++;
+    if (n < 9) { term.insertAdjacentHTML('beforeend', `<div class="dim in">[${n * 34}/312] Compiling Lintel ${['IslandView', 'Meetings', 'WhisperEngine', 'Grove', 'Shelf', 'SystemMonitor', 'Limits', 'Prompter'][n - 1]}.swift</div>`); }
+    else if (n === 9) { term.insertAdjacentHTML('beforeend', '<div class="ok in">Build complete! (41.2s)</div>'); sysLoad = false; }
+  }, 650);
 }
 const TOUR = [
   { t: 'home', title: 'Home', d: 6000, run: sHome },
   { t: 'voice', title: 'Voice typing', text: 'Hold ⌥ and speak. Let go, and your words are ready to paste into any app.', d: 9000, run: sVoice },
-  { t: 'meetings', title: 'Meeting notes', d: 8000, run: sMeetings },
+  { t: 'meetings', title: 'Meeting notes', d: 6500, run: sMeetings },
   { t: 'prompt', title: 'Teleprompter', text: 'Your script scrolls right under the camera, so you keep eye contact. Nobody on the call sees it.', d: 6500, run: sPrompter },
-  { t: 'grove', title: 'Focus', d: 6000, run: sGrove },
-  { t: 'clipboard', title: 'Clipboard', d: 5500, run: sClipboard },
+  { t: 'grove', title: 'Focus', d: 5500, run: sGrove },
+  { t: 'usage', title: 'AI usage limits', d: 7000, run: sUsage },
+  { t: 'shelf', title: 'File shelf', d: 7500, run: sShelf },
+  { t: 'system', title: 'System monitor', d: 7000, run: sSystem },
 ];
 const stepsEl = $('#steps');
-stepsEl.innerHTML = TOUR.map((s, i) => `<button aria-label="${s.title}"><i></i></button>`).join('');
+stepsEl.innerHTML = TOUR.map(s => `<button aria-label="${s.title}"><i></i></button>`).join('');
 const stepBtns = $$('button', stepsEl);
 let ti = 0, tRun = 0, tTimer = 0, playing = !reduce, demoVisible = false;
 const tourTx = $('#tourTx'), pp = $('#tourPP');
-function setText(title, text) { tourTx.innerHTML = `<b>${esc(title)}</b>${esc(text)}`; }
+const setText = (title, text) => (tourTx.innerHTML = `<b>${esc(title)}</b>${esc(text)}`);
 function go(i) {
   ti = (i + TOUR.length) % TOUR.length;
   const st = TOUR[ti], run = ++tRun, ok = () => run === tRun;
@@ -397,44 +498,68 @@ function setPlaying(p) {
 }
 pp.addEventListener('click', () => { if (playing) setPlaying(false); else { setPlaying(true); go(ti + 1); } });
 stepBtns.forEach((b, j) => b.addEventListener('click', () => go(j)));
-// Clicking a tab in the notch takes over the demo, like the real thing.
-$$('#Ltabs .tb button').forEach(b => b.addEventListener('click', () => {
+function openTab(t) {
   if (playing) setPlaying(false);
   tRun++; clean(); resetDesk();
-  const t = b.dataset.tab;
   tabSet(t); islSet('tabs');
-  wins(...({ meetings: ['wCall'], grove: ['wBrowser'], clipboard: ['wNotes'] }[t] || []));
+  wins(...({ meetings: ['wCall'], grove: ['wBrowser'], usage: ['wTerm'], shelf: ['wFinder'] }[t] || []));
   stepBtns.forEach(x => x.classList.remove('cur', 'done'));
   setText(TABS[t][0], TABS[t][2]);
-}));
-isl.addEventListener('pointerenter', () => {
-  if (islMode !== 'closed' || playing) return;
-  islSet('tabs'); tabSet(curTab);
-});
+}
+// Clicking a tab in the notch takes over the demo, like the real thing.
+$$('#Ltabs .tb button').forEach(b => b.addEventListener('click', () => openTab(b.dataset.tab)));
+isl.addEventListener('pointerenter', () => { if (islMode === 'closed' && !playing) { islSet('tabs'); tabSet(curTab); } });
 $('#watch').addEventListener('click', () => { setPlaying(true); setTimeout(() => go(0), 500); });
 onView(device, () => { if (!demoVisible) { demoVisible = true; go(ti); } }, () => { demoVisible = false; clearTimeout(tTimer); }, .25);
 tabSet('home');
 
-// The screen tilts back as it rises into view.
-let tiltQueued = false;
-function tilt() {
-  tiltQueued = false;
+/* feature strip: pick one to see it in the demo */
+const FEATS = [
+  ['Voice typing', 'mic', '#b8abff', 'voice'], ['Meeting notes', 'audio-lines', '#5ad1cc', 'meetings'], ['Teleprompter', 'scroll-text', '#ffb340', 'prompt'],
+  ['Focus blocker', 'sprout', '#34c759', 'grove'], ['AI usage limits', 'gauge', '#e8916f', 'usage'], ['File shelf and AirDrop', 'inbox', '#4c8dff', 'shelf'],
+  ['System monitor', 'cpu', '#34c759', 'system'], ['Clipboard history', 'clipboard', '#b8abff', 'tab:clipboard'],
+  ['Hindi, Bengali and English', 'languages', '#ff6fae', '#voice'], ['Calendar with Join', 'calendar', '#ffb340', 'home'], ['Music controls', 'music', '#ff6fae', '#t-music'],
+  ['Todos', 'list-checks', '#4c8dff', 'tab:todos'], ['Timer', 'timer', '#ffb340', '#t-timer'], ['Launcher', 'layout-grid', '#ff9f5a', '#t-you'],
+  ['Camera mirror', 'camera', '#5ad1cc', '#t-you'], ['Per-app volume', 'volume', '#b8abff', '#t-you'], ['AI clean-up', 'file-text', '#ff9cc6', '#voice'],
+];
+const pill = ([n, i, c, g]) => `<button class="mp" data-go="${g}" style="--c:${c}"><i>${ic(i)}</i>${n}</button>`;
+const half = Math.ceil(FEATS.length / 2), rowA = FEATS.slice(0, half), rowB = FEATS.slice(half);
+$('#marquee').innerHTML = [rowA, rowB].map((r, k) => `<div class="mtrack${k ? ' rev' : ''}">${r.map(pill).join('')}${r.map(pill).join('')}</div>`).join('');
+$$('#marquee [data-go]').forEach(b => b.addEventListener('click', () => {
+  const g = b.dataset.go;
+  if (g.startsWith('#')) { $(g).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); return; }
+  $('#demo').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  setTimeout(() => {
+    if (g.startsWith('tab:')) return openTab(g.slice(4));
+    const i = TOUR.findIndex(s => s.t === g);
+    if (!playing) setPlaying(true);
+    go(i < 0 ? 0 : i);
+  }, reduce ? 0 : 450);
+}));
+
+/* scrolling: the screen tilts back as it rises, the light drifts, and the bar fills */
+const glow = $('.glow');
+let scrollQueued = false;
+function onScroll() {
+  scrollQueued = false;
   nav.classList.toggle('solid', scrollY > 8 || sheet.classList.contains('open'));
+  const max = document.documentElement.scrollHeight - innerHeight;
+  nav.style.setProperty('--sp', max > 0 ? (scrollY / max).toFixed(4) : 0);
   if (reduce) return;
+  if (scrollY < 1600) glow.style.setProperty('--gy', scrollY * .35 + 'px');
   const r = device.getBoundingClientRect();
-  const p = clamp(1 - (r.top - innerHeight * .1) / (innerHeight * .75), 0, 1);
-  const e = 1 - Math.pow(1 - p, 3);
+  const p = clamp(1 - (r.top - innerHeight * .1) / (innerHeight * .75), 0, 1), e = 1 - Math.pow(1 - p, 3);
   device.style.setProperty('--tilt', (16 * (1 - e)).toFixed(2) + 'deg');
   device.style.setProperty('--zoom', (.93 + .07 * e).toFixed(3));
 }
-addEventListener('scroll', () => { if (!tiltQueued) { tiltQueued = true; requestAnimationFrame(tilt); } }, { passive: true });
-tilt();
+addEventListener('scroll', () => { if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(onScroll); } }, { passive: true });
+onScroll();
 
 /* ================= VOICE TYPING ================= */
 const samples = [
   { to: 'Maya Chen', sub: 'Design review', text: 'Hi Maya, can we push the design review to Thursday? I’d like the team to see the new onboarding flow first.' },
   { to: 'Rohan', sub: 'Aaj ki call', text: 'Yaar, main thoda late ho jaoonga. Sabko bata dena ki call paanch baje start hogi.' },
-  { to: 'Ankita', sub: 'আজকের প্ল্যান', text: 'আজকে আমি অফিসে একটু দেরি করে পৌঁছাব, তুমি প্লিজ ক্লায়েন্টকে একটা মেইল করে দিও।' },
+  { to: 'Ankita', sub: 'Today', text: 'আজকে আমি অফিসে একটু দেরি করে পৌঁছাব, তুমি প্লিজ ক্লায়েন্টকে একটা মেইল করে দিও।' },
   { to: 'Release team', sub: 'Before we ship', text: 'আমার মনে হয় ফিচারটা খুব কাজের হবে, but we need to test it properly before the release.' },
 ];
 const key = $('#key'), heard = $('#heard'), mBody = $('#mBody'), vMini = $('#vMini'), paste = $('#paste');
@@ -516,44 +641,32 @@ onView(raw, () => {
   cleanLoop = setInterval(() => !cleanTouched && setClean(!raw.classList.contains('clean')), 3600);
 }, () => { if (!cleanTouched) { clearInterval(cleanLoop); cleanLoop = 0; } }, .6);
 
-/* ================= LANGUAGES ================= */
 const sentences = [
-  [['bn', 'আমার মনে হয় ফিচারটা খুব কাজের হবে,'], ['en', 'but we need to test it properly before the release.']],
   [['hi', 'Kal ki meeting cancel karo,'], ['en', 'we’ll do it on Monday.']],
-  [['en', 'Can you send me the slides?'], ['bn', 'আমি আজ রাতে দেখে নেব।']],
-  [['hi', 'Yaar, main thoda late ho jaoonga.'], ['en', 'Start the call without me.']],
+  [['bn', 'আমার মনে হয় ফিচারটা খুব কাজের হবে,'], ['en', 'but let’s test it first.']],
+  [['en', 'Send me the deck tonight,'], ['hi', 'main subah review kar lunga.']],
 ];
-const tagText = { hi: 'Hindi · English letters', bn: 'Bengali · Bengali script', en: 'English' };
+const tagText = { hi: 'Hindi', bn: 'Bengali', en: 'English' };
 const sent = $('#sent'), sdots = $('#sdots');
 sdots.innerHTML = sentences.map((_, i) => `<button aria-label="Example ${i + 1}"></button>`).join('');
 let sentI = 0, riverRun = 0;
 $$('button', sdots).forEach((b, i) => b.addEventListener('click', () => { sentI = i; river(++riverRun); }));
 async function river(run) {
   while (run === riverRun) {
-    const S = sentences[sentI];
     $$('button', sdots).forEach((b, i) => b.classList.toggle('cur', i === sentI));
-    sent.innerHTML = S.map(([l, t]) => `<span class="run ${l}" lang="${l}"><span class="tag ${l}">${tagText[l]}</span>` +
+    sent.innerHTML = sentences[sentI].map(([l, t]) => `<span class="run ${l}" lang="${l}"><span class="tag ${l}">${tagText[l]}</span>` +
       t.split(' ').map(w => `<span class="w">${esc(w)}</span>`).join('') + '<i class="under"></i></span>').join('');
     sent.style.opacity = 1;
     for (const r of $$('.run', sent)) {
-      for (const w of $$('.w', r)) { await sleep(reduce ? 0 : 105); if (run !== riverRun) return; w.classList.add('lit'); }
-      r.classList.add('done');
-      await sleep(260);
+      for (const w of $$('.w', r)) { await sleep(reduce ? 0 : 110); if (run !== riverRun) return; w.classList.add('lit'); }
+      r.classList.add('done'); await sleep(260);
     }
-    await sleep(2800); if (run !== riverRun) return;
+    await sleep(2600); if (run !== riverRun) return;
     sent.style.opacity = 0; await sleep(450);
     sentI = (sentI + 1) % sentences.length;
   }
 }
 onView($('.river'), () => river(++riverRun), () => riverRun++, .4);
-$$('.typed').forEach(p => {
-  p.innerHTML = graphemes(p.dataset.text).map(g => `<span class="c">${esc(g)}</span>`).join('');
-  let done = false;
-  onView(p, async () => {
-    if (done) return; done = true;
-    for (const c of $$('.c', p)) { c.classList.add('on'); if (!reduce) await sleep(16); }
-  }, null, .6);
-});
 
 /* ================= MEETINGS ================= */
 const cMini = $('#cMini'), callScr = $('#callScr'), cCur = $('#cCur'), linesEl = $('#lines'), panel = $('#panel');
@@ -562,7 +675,6 @@ const mLines = [
   { who: 'me', text: 'Haan, bas final testing baaki hai.' },
   { who: 'them', live: 'Aami report ta Friday er modhye pathiye debo.', text: 'আমি রিপোর্টটা ফ্রাইডের মধ্যে পাঠিয়ে দেব।' },
   { who: 'me', text: 'Perfect. Let’s lock the date today.' },
-  { who: 'them', text: 'And I’ll update the release notes tonight.' },
 ];
 let meetRun = 0, meetClock = 0;
 function cMiniState(s) {
@@ -617,7 +729,7 @@ async function meeting(run) {
     tile.classList.remove('talk');
     if (L.live) {
       await sleep(900); if (!ok()) return;
-      txt.innerHTML = `<span class="swap"><span class="a">${esc(L.live)}</span><span class="b" lang="bn">${esc(L.text)}</span></span><span class="ref">${ic('check', 'width:12px;height:12px')}Bengali model</span>`;
+      txt.innerHTML = `<span class="swap"><span class="a">${esc(L.live)}</span><span class="b" lang="bn">${esc(L.text)}</span></span><span class="ref">${ic('check')}Bengali model</span>`;
       await sleep(60); el.classList.add('refined');
     }
     while (linesEl.scrollHeight > linesEl.clientHeight + 2 && linesEl.children.length > 1) linesEl.firstElementChild.remove();
@@ -640,124 +752,75 @@ onView(callScr, () => { if (!meetVisible) { meetVisible = true; meeting(++meetRu
   () => { meetVisible = false; meetRun++; clearInterval(meetClock); $$('#callScr .ct').forEach(t => t.classList.remove('talk')); }, .35);
 $('#replay').addEventListener('click', () => meeting(++meetRun));
 
-/* ================= TELEPROMPTER ================= */
-const script = 'Hi everyone, and thanks for joining. Today I want to show you how Lintel turns the notch into the most useful spot on your Mac. Watch the words right under the camera: you keep eye contact, and nobody on the call can see your notes. Set your own pace, or let it follow your voice. Hover to pause at any time, and pick up right where you left off. That’s it. Let’s get started.';
-const ptxt = $('#ptxt'), prom = $('#prom'), speed = $('#speed'), followSw = $('#follow');
-ptxt.innerHTML = script.split(' ').map(w => `<span class="w">${esc(w)}</span>`).join(' ');
-const pWords = $$('.w', ptxt);
-const READ = 58;
-let pOff = -READ, pLast = 0, pHover = false, pFollow = false, pWord = 0, pNext = 0, pOn = false;
-function pFrame(t) {
-  if (!pOn) return;
-  const dt = Math.min(.05, (t - (pLast || t)) / 1000); pLast = t;
-  const lh = parseFloat(getComputedStyle(ptxt).lineHeight) || 38;
-  if (!pHover && !(reduce && !pFollow)) {
-    if (pFollow) {
-      if (t >= pNext) {
-        if (pWord < pWords.length) {
-          const w = pWords[pWord++]; w.classList.add('said');
-          pNext = t + 210 + Math.random() * 170 + (/[.,:!?]$/.test(w.textContent) ? 420 : 0);
-        } else if (t > pNext + 1200) { pWord = 0; pOff = -READ; pWords.forEach(w => w.classList.remove('said')); }
-      }
-      const c = pWords[Math.max(0, pWord - 1)];
-      pOff += (c.offsetTop - READ + 4 - pOff) * Math.min(1, dt * 3.5);
-    } else {
-      const perLine = pWords.length / Math.max(1, ptxt.offsetHeight / lh);
-      pOff += (+speed.value / 60) / perLine * lh * dt;
-      if (pOff > ptxt.offsetHeight - READ + 20) pOff = -READ;
-    }
-  }
-  ptxt.style.transform = `translateY(${-pOff}px)`;
-  requestAnimationFrame(pFrame);
-}
-speed.addEventListener('input', () => ($('#wpm').textContent = speed.value + ' words a minute'));
-followSw.addEventListener('click', () => {
-  pFollow = followSw.getAttribute('aria-checked') !== 'true';
-  followSw.setAttribute('aria-checked', pFollow);
-  prom.classList.toggle('fixed', !pFollow);
-  speed.disabled = pFollow;
-  pWords.forEach(w => w.classList.remove('said'));
-  pWord = Math.max(0, pWords.findIndex(w => w.offsetTop - READ >= pOff - 4));
-  pWords.slice(0, pWord).forEach(w => w.classList.add('said'));
+/* ================= EVERYTHING: live tiles ================= */
+// Shelf: files dropped here stay on this page; nothing is uploaded.
+const shelf = $('#shelf');
+const shelfDefault = shelf.innerHTML;
+const midName = n => (n.length > 14 ? n.slice(0, 5) + '…' + n.slice(-8) : n);
+const thumbFor = name => /\.pdf$/i.test(name) ? '<span class="thumb doc" style="background:linear-gradient(#ff7a7a,#e5484d)"></span>'
+  : `<span class="thumb" style="background:linear-gradient(135deg,hsl(${(name.length * 47) % 360} 80% 65%),hsl(${(name.length * 47 + 60) % 360} 70% 45%))"></span>`;
+['dragenter', 'dragover'].forEach(n => shelf.addEventListener(n, e => { e.preventDefault(); shelf.classList.add('over'); }));
+['dragleave', 'drop'].forEach(n => shelf.addEventListener(n, () => shelf.classList.remove('over')));
+shelf.addEventListener('drop', e => {
+  e.preventDefault();
+  [...(e.dataTransfer.files || [])].slice(0, 4).forEach(f => shelf.insertAdjacentHTML('beforeend', `<div class="f new" title="${esc(f.name)}">${thumbFor(f.name)}${esc(midName(f.name))}</div>`));
+  while (shelf.children.length > 5) shelf.firstElementChild.remove();
 });
-prom.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') pHover = true; });
-prom.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') pHover = false; });
-prom.addEventListener('click', e => { if (e.pointerType !== 'mouse') pHover = !pHover; });
-onView($('#bz'), () => { if (!pOn) { pOn = true; pLast = 0; requestAnimationFrame(pFrame); } }, () => (pOn = false), .4);
+const flash = (btn, msg) => { btn.classList.add('hot'); setTimeout(() => btn.classList.remove('hot'), 1200); say(msg); };
+$('#sAir').addEventListener('click', e => flash(e.currentTarget, 'In Lintel, this opens AirDrop with the files on your shelf.'));
+$('#sCopy').addEventListener('click', e => flash(e.currentTarget, `Copied ${shelf.children.length} files. Paste them into any app.`));
+$('#sClear').addEventListener('click', () => {
+  [...shelf.children].forEach((f, i) => { f.style.transition = 'opacity .3s, transform .3s'; f.style.transitionDelay = i * 50 + 'ms'; f.style.opacity = 0; f.style.transform = 'scale(.8)'; });
+  setTimeout(() => { shelf.innerHTML = '<span style="color:var(--ink3);font-size:13.5px">Shelf cleared. Drop a file here.</span>'; }, 450);
+  setTimeout(() => { if (!shelf.querySelector('.f')) shelf.innerHTML = shelfDefault; }, 4500);
+});
 
-/* ================= FOCUS ================= */
-const gArc = $('#gArc'), gTime = $('#gTime'), gState = $('#gState'), gStart = $('#gStart');
-const gTree = () => $('#gTreeBox svg');
-const block = $('#block'), fake = $('#fake');
-const fakes = {
-  docs: '<i style="width:42%;height:20px"></i><i></i><i style="width:92%"></i><i style="width:86%"></i><i style="width:58%"></i><div style="height:8px"></div><i style="width:95%"></i><i style="width:88%"></i><i style="width:72%"></i>',
-  videos: '<div class="vid"></div><i style="width:70%"></i><i style="width:44%"></i>',
-  feed: '<div class="post"></div><div class="post"></div><div class="post"></div>',
-};
-let gMin = 25, gRunning = false, gLeft = 1500, gTotal = 1500, gInt = 0, passUntil = 0, tab = 'docs';
-function setTab(t) {
-  tab = t;
-  $$('#btabs button').forEach(b => b.classList.toggle('cur', b.dataset.t === t));
-  fake.innerHTML = fakes[t]; updateBlock();
+// Teleprompter tile
+const mprom = $('#mprom'), mpTx = $('#mpTx');
+let mpOff = -20, mpLast = 0, mpOn = false, mpHover = false;
+mprom.addEventListener('pointerenter', () => (mpHover = true));
+mprom.addEventListener('pointerleave', () => (mpHover = false));
+function mpFrame(t) {
+  if (!mpOn) return;
+  const dt = Math.min(.05, (t - (mpLast || t)) / 1000); mpLast = t;
+  if (!mpHover && !reduce) { mpOff += dt * 16; if (mpOff > mpTx.offsetHeight - 20) mpOff = -40; }
+  mpTx.style.transform = `translateY(${-mpOff}px)`;
+  requestAnimationFrame(mpFrame);
 }
-function updateBlock() {
-  block.classList.toggle('on', gRunning && tab !== 'docs' && Date.now() > passUntil);
-  $('#bTitle').textContent = tab === 'videos' ? 'Videos can wait' : 'Your feed can wait';
-}
-function gRender() {
-  gTime.textContent = fmt(gLeft);
-  const frac = gTotal ? gLeft / gTotal : 1;
-  gArc.style.strokeDashoffset = gRunning ? 282.7 * frac : 282.7;
-  if (gRunning) gTree().dataset.stage = Math.min(4, 1 + Math.floor((1 - frac) * 3.4));
-  $('#bLeft').textContent = fmt(gLeft) + ' left';
-  $('#bBar').style.width = (1 - frac) * 100 + '%';
-  updateBlock();
-}
-const hintIdle = 'Start a session, then try opening Videos or Feed. The demo runs a minute every second.';
-function gStop(done) {
-  gRunning = false; clearInterval(gInt);
-  gStart.textContent = 'Start';
-  if (done) {
-    gState.textContent = 'A NEW TREE IN YOUR GARDEN'; gTree().dataset.stage = 4; gArc.style.strokeDashoffset = 0;
-    const today = $('#garden').lastElementChild;
-    today.innerHTML = treeSVG(4, 64) + '<span>W</span>';
-    $('#gStreak').textContent = '8 days';
-    setTimeout(() => { if (!gRunning) { gState.textContent = 'READY TO FOCUS'; gTree().dataset.stage = 0; gLeft = gTotal = gMin * 60; gRender(); } }, 3500);
-  } else {
-    gState.textContent = 'READY TO FOCUS'; gTree().dataset.stage = 0; gLeft = gTotal = gMin * 60; gRender();
-  }
-  $('#fHint').textContent = hintIdle;
-}
-gStart.addEventListener('click', () => {
-  if (gRunning) return gStop(false);
-  gTotal = gLeft = gMin * 60; gRunning = true; passUntil = 0;
-  gStart.textContent = 'Give up'; gState.textContent = 'GROWING';
-  $('#fHint').textContent = 'Now try opening Videos or Feed.';
-  gRender();
-  gInt = setInterval(() => { gLeft -= 15; if (gLeft <= 0) { gLeft = 0; gRender(); gStop(true); } else gRender(); }, 250);
-});
-$$('#durs [data-m]').forEach(b => b.addEventListener('click', () => {
-  if (gRunning) return;
-  gMin = +b.dataset.m; $$('#durs [data-m]').forEach(x => x.classList.toggle('cur', x === b));
-  gLeft = gTotal = gMin * 60; gRender();
-}));
-$$('#btabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.t)));
-$('#bBack').addEventListener('click', () => setTab('docs'));
-$('#bPass').addEventListener('click', () => {
-  passUntil = Date.now() + 8000; updateBlock();
-  $('#fHint').textContent = 'One-minute pass (8 seconds in this demo). The block comes back after it.';
-  setTimeout(updateBlock, 8100);
-});
-onView($('#garden'), () => $('#garden').classList.add('in'), null, .5);
-setTab('docs'); gRender();
+onView(mprom, () => { if (!mpOn) { mpOn = true; mpLast = 0; requestAnimationFrame(mpFrame); } }, () => (mpOn = false), .3);
 
-/* ================= EVERYTHING ================= */
+// Focus tile
+const fArc = $('#fArc'), fTime = $('#fTime'), fStart = $('#fStart'), fState = $('#fState');
+const fTree = () => $('#fTree svg');
+let fRun = false, fLeft = 1500, fInt = 0;
+function fRender() {
+  fTime.textContent = fmt(fLeft);
+  const frac = fLeft / 1500;
+  fArc.style.strokeDashoffset = fRun ? 282.7 * frac : 282.7;
+  if (fRun) fTree().dataset.stage = Math.min(4, 1 + Math.floor((1 - frac) * 3.4));
+}
+function fStop(done) {
+  fRun = false; clearInterval(fInt);
+  fStart.innerHTML = ic('play') + 'Start';
+  if (done) { fState.textContent = 'New tree'; fTree().dataset.stage = 4; fArc.style.strokeDashoffset = 0; }
+  setTimeout(() => { if (!fRun) { fState.textContent = 'Ready'; fTree().dataset.stage = 0; fLeft = 1500; fRender(); } }, done ? 3500 : 0);
+}
+fStart.addEventListener('click', () => {
+  if (fRun) return fStop(false);
+  fRun = true; fLeft = 1500; fState.textContent = 'Blocking 6 sites';
+  fStart.innerHTML = ic('x') + 'Give up';
+  fRender();
+  fInt = setInterval(() => { fLeft -= 30; if (fLeft <= 0) { fLeft = 0; fRender(); fStop(true); } else fRender(); }, 250);
+});
+fRender();
+
+// Music
 const tracks = [
   { t: 'Golden Hour', a: 'Lumen Drift', c1: '#ff7a59', c2: '#a63fd1', len: 213 },
   { t: 'Night Swim', a: 'Halcyon Park', c1: '#3fb5ff', c2: '#5b3df5', len: 184 },
   { t: 'Paper Planes', a: 'The Quiet Hours', c1: '#ffd166', c2: '#ef476f', len: 221 },
 ];
-const music = $('#music');
+const music = $('#t-music');
 let trk = 0, pos = 87, playingM = true;
 function mRender() {
   const T = tracks[trk];
@@ -779,31 +842,34 @@ $('#mPrev').addEventListener('click', () => (pos > 3 ? (pos = 0, mRender()) : se
 setInterval(() => { if (!playingM) return; pos += .5; if (pos >= tracks[trk].len) setTrack(trk + 1); else mRender(); }, 500);
 setTrack(0, true); setPlayingM(true);
 
+// Next up
 const nStart = Date.now();
 setInterval(() => {
   const left = Math.max(0, 14 * 60 - (Date.now() - nStart) / 1000);
   $('#nIn').textContent = left > 0 ? `IN ${Math.floor(left / 60)}M ${String(Math.floor(left % 60)).padStart(2, '0')}S` : 'NOW';
 }, 1000);
 
+// Clipboard
 const clipPool = [
-  ['link', 'lintel.saswatasg.com'], ['file-text', 'Shipping the fix tonight'], ['monitor', 'Screenshot at 9.41 AM'],
-  ['folder', 'Q4 roadmap.pdf'], ['file-text', 'আজকের মিটিং ৫টায়'], ['app-window', 'git push origin main'],
-  ['file-text', 'Kal subah 10 baje milte hain'], ['link', 'developer.apple.com/design'],
+  ['link', 'lintel.saswatasg.com'], ['file-text', 'Shipping the fix tonight'], ['image', 'Screenshot at 9.41 AM'],
+  ['folder', 'Q4 roadmap.pdf'], ['terminal', 'git push origin main'], ['file-text', 'Kal subah 10 baje milte hain'], ['link', 'developer.apple.com/design'],
 ];
 const clip = $('#clip');
-let clipI = 5, clipVisible = false;
+let clipI = 4, clipVisible = false;
 const clipItem = ([k, t]) => `<div class="it"><span class="k">${ic(k)}</span><span>${esc(t)}</span></div>`;
-clip.innerHTML = clipPool.slice(0, 5).map(clipItem).join('');
+clip.innerHTML = clipPool.slice(0, 4).map(clipItem).join('');
 setInterval(() => {
   if (!clipVisible) return;
   clip.insertAdjacentHTML('afterbegin', clipItem(clipPool[clipI++ % clipPool.length]));
-  if (clip.children.length > 6) clip.lastElementChild.remove();
+  if (clip.children.length > 4) clip.lastElementChild.remove();
 }, 2600);
 onView(clip, () => (clipVisible = true), () => (clipVisible = false), .2);
 
+// Todos
 $$('#todos button').forEach(b => b.addEventListener('click', () => b.classList.toggle('done')));
 setTimeout(() => $('#todos button').classList.add('done'), 2500);
 
+// Timer
 let tLeft = 300, tOn = true;
 $('#tRing').addEventListener('click', () => { tOn = !tOn; $('#tState').textContent = tOn ? 'Running' : 'Paused'; });
 setInterval(() => {
@@ -813,61 +879,7 @@ setInterval(() => {
   $('#tArc').style.strokeDashoffset = 282.7 * (1 - tLeft / 300);
 }, 1000);
 
-const limits = [
-  { n: 'Claude', p: 62, r: 'resets 3:40 PM', c: '#d97757' },
-  { n: 'Codex', p: 81, r: 'resets Friday', c: '#8b7bff' },
-  { n: 'OpenCode Go', p: 44, r: 'resets in 2h', c: '#34c759' },
-];
-const lims = $('#lims');
-lims.innerHTML = limits.map(l => `<div><div class="t">${l.n}<span></span></div><div class="b"><i style="background:${l.c};width:0"></i></div></div>`).join('');
-const limRender = () => [...lims.children].forEach((el, i) => {
-  el.querySelector('i').style.width = limits[i].p + '%';
-  el.querySelector('span').textContent = `${limits[i].p}% · ${limits[i].r}`;
-});
-onView(lims, limRender, null, .4);
-setInterval(() => { limits.forEach(l => { l.p -= Math.random() < .5 ? 1 : 0; if (l.p < 6) l.p = 96; }); limRender(); }, 2800);
-
-const cpu = Array.from({ length: 40 }, () => 15 + Math.random() * 20), mem = Array.from({ length: 40 }, () => 40 + Math.random() * 5);
-const pathOf = (a, max, h) => a.map((v, i) => `${i ? 'L' : 'M'}${(i / (a.length - 1) * 200).toFixed(1)} ${(h - v / max * (h - 6) - 3).toFixed(1)}`).join(' ');
-function monTick() {
-  cpu.push(clamp(cpu[cpu.length - 1] + (Math.random() - .5) * 22, 4, 96)); cpu.shift();
-  mem.push(clamp(mem[mem.length - 1] + (Math.random() - .5) * 2, 30, 60)); mem.shift();
-  const d = pathOf(cpu, 100, 60);
-  $('#cpuP').setAttribute('d', d); $('#cpuA').setAttribute('d', d + ' L200 60 L0 60 Z');
-  $('#memP').setAttribute('d', pathOf(mem, 64, 40));
-  $('#cpuV').textContent = Math.round(cpu[cpu.length - 1]) + '%';
-  $('#memV').textContent = (mem[mem.length - 1] / 4).toFixed(1) + ' GB';
-}
-monTick(); setInterval(monTick, 700);
-
-const acts = [
-  [ic('battery-charging', 'color:var(--green)') + 'Charging', '82%'],
-  [ic('timer', 'color:var(--amber)') + 'Timer done', '25:00'],
-  [ic('video', 'color:var(--green)') + 'Design review', 'in 1 min'],
-  [ic('circle-check', 'color:#d97757') + 'Claude Code', 'finished'],
-];
-const actN = $('#actN');
-let actI = 0, actVisible = false;
-async function actCycle() {
-  while (actVisible) {
-    const [l, r] = acts[actI++ % acts.length];
-    $('#actL').innerHTML = l; $('#actR').textContent = r;
-    actN.classList.add('open'); await sleep(2400);
-    actN.classList.remove('open'); await sleep(900);
-  }
-}
-onView(actN.parentElement, () => { if (!actVisible) { actVisible = true; actCycle(); } }, () => (actVisible = false), .4);
-
-// Shelf: files dropped here stay on this page; nothing is uploaded.
-const shelf = $('#shelf');
-['dragenter', 'dragover'].forEach(n => shelf.addEventListener(n, e => { e.preventDefault(); shelf.classList.add('over'); }));
-['dragleave', 'drop'].forEach(n => shelf.addEventListener(n, () => shelf.classList.remove('over')));
-shelf.addEventListener('drop', e => {
-  e.preventDefault();
-  [...(e.dataTransfer.files || [])].slice(0, 4).forEach(f => shelf.insertAdjacentHTML('beforeend', `<div class="f">${ic('file-text')}${esc(f.name)}</div>`));
-  while (shelf.children.length > 6) shelf.firstElementChild.remove();
-});
-
+// Accent colours
 const accents = [['#8b7bff', '#b8abff'], ['#ff6fae', '#ffadd0'], ['#34c759', '#86e6a0'], ['#ffb340', '#ffd28a'], ['#3fb5ff', '#9bd8ff'], ['#ff5b5b', '#ff9e9e']];
 const accEl = $('#accents');
 accEl.innerHTML = accents.map(([c], i) => `<button class="accent-dot${i ? '' : ' cur'}" style="background:${c}" aria-label="Accent colour ${i + 1}"></button>`).join('');
@@ -879,7 +891,7 @@ $$('button', accEl).forEach((b, i) => b.addEventListener('click', () => {
 
 /* ================= PRIVACY ================= */
 const sat = $('#sat');
-const satItems = ['Your voice', 'Meetings', 'Clipboard', 'Notes', 'Scripts', 'Focus', 'Todos'];
+const satItems = ['Your voice', 'Meetings', 'Clipboard', 'Files', 'Scripts', 'Focus', 'Todos'];
 sat.innerHTML = satItems.map(t => `<span>${t}</span>`).join('');
 let satSpin = 0, satOn = false, satLast = 0;
 function placeSats() {
@@ -926,7 +938,7 @@ setBill('m', true);
 addEventListener('resize', () => setBill(bill, true));
 if (document.fonts) document.fonts.ready.then(() => setBill(bill, true));
 
-/* ================= sticky download button on phones ================= */
+/* ================= sticky button on phones ================= */
 const mcta = $('#mcta'), heroCtas = $('.hero .ctas'), finalCard = $('.fcard');
 let pastHero = false, atEnd = false;
 const mctaSet = () => mcta.classList.toggle('on', pastHero && !atEnd);
