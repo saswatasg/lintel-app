@@ -46,7 +46,7 @@ $$('[data-cta]').forEach(a => {
   const pre = a.querySelector('[data-cta-pre]');
   if (STORE_URL) {
     a.href = STORE_URL; a.rel = 'noopener';
-    if (pre) pre.textContent = 'DOWNLOAD ON THE';
+    if (pre) pre.textContent = 'Download on the';
     if (a.dataset.ctaLabel) a.textContent = a.dataset.ctaLabel;
   } else if (PRE) {
     if (a.dataset.ctaLabel) a.textContent = 'Notify me at launch';
@@ -119,10 +119,6 @@ $$('a', sheet).forEach(a => a.addEventListener('click', () => setSheet(false)));
 addEventListener('keydown', e => { if (e.key === 'Escape') { setDD(false); setSheet(false); } });
 
 /* ---------- reveals, headings, numbers ---------- */
-$$('h2.rise').forEach(h => {
-  h.innerHTML = h.textContent.trim().split(/\s+/)
-    .map((w, i) => `<span class="w"><span style="transition-delay:${i * 55}ms">${esc(w)}</span></span>`).join(' ');
-});
 function countUp(el) {
   const to = +el.dataset.count, from = +(el.dataset.from || 0), suf = el.dataset.suffix || '';
   if (reduce) { el.textContent = to + suf; return; }
@@ -145,18 +141,10 @@ const revealIO = new IntersectionObserver(es => es.forEach(e => {
 $$('[data-reveal]').forEach(el => {
   const sib = [...el.parentElement.children].filter(c => c.hasAttribute('data-reveal'));
   const i = sib.indexOf(el);
-  if (i > 0) el.style.transitionDelay = Math.min(i, 6) * 70 + 'ms';
+  if (i > 0) el.style.transitionDelay = Math.min(i, 6) * 50 + 'ms';
   revealIO.observe(el);
 });
 $$('h2.rise').forEach(el => revealIO.observe(el));
-// A soft light follows the pointer across cards.
-addEventListener('pointermove', e => {
-  const c = e.target.closest && e.target.closest('.card');
-  if (!c) return;
-  const r = c.getBoundingClientRect();
-  c.style.setProperty('--mx', e.clientX - r.left + 'px');
-  c.style.setProperty('--my', e.clientY - r.top + 'px');
-}, { passive: true });
 
 /* ---------- trees ---------- */
 const treeSVG = (stage, h) => stage === 0
@@ -224,11 +212,11 @@ const cpuHTML = `<div class="cpu"><div class="hd"><span style="font-size:12px;fo
   <div class="p-s" style="font-size:11px">user <span data-sys="user">24</span>% · system <span data-sys="sysp">10</span>%</div>
   <svg class="spark" viewBox="0 0 200 40" preserveAspectRatio="none"><path data-sys="area" fill="rgba(52,199,89,.15)"/><path data-sys="line" fill="none" stroke="#34c759" stroke-width="2" stroke-linejoin="round"/></svg>
   <div class="cores" data-sys="cores">${'<i><b></b></i>'.repeat(10)}</div>
-  <div class="sysrow"><div>GPU<b class="g"><span data-sys="gpu">24</span>%</b></div><div>NETWORK<b class="net">${ic('arrow-down')}<span data-sys="down">3.6 MB/s</span>${ic('arrow-up')}<span data-sys="up">207 KB/s</span></b></div></div></div>`;
+  <div class="sysrow"><div>GPU<b class="g"><span data-sys="gpu">24</span>%</b></div><div>Network<b class="net">${ic('arrow-down')}<span data-sys="down">3.6 MB/s</span>${ic('arrow-up')}<span data-sys="up">207 KB/s</span></b></div></div></div>`;
 const memHTML = `<div class="mem"><div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:rgba(255,255,255,.55)"><span style="display:flex;align-items:center;gap:6px">${ic('memory', 'width:13px;height:13px')}Memory</span><span class="tag ok">Normal</span></div>
   <div style="display:flex;justify-content:space-between;margin-top:6px"><b><span data-sys="mem">11.0</span> GB of 16.0 GB</b><span class="p-s" style="font-size:11px">swap 1.2 GB</span></div>
-  <div class="segbar"><i data-sys="app" style="width:46%;background:#8b7bff"></i><i style="width:15%;background:#ffb340"></i><i style="width:8%;background:#ff6fae"></i></div>
-  <div class="lg3"><span style="--c:#8b7bff">App</span><span style="--c:#ffb340">Wired</span><span style="--c:#ff6fae">Compressed</span></div>
+  <div class="segbar"><i data-sys="app" style="width:46%;background:var(--accent)"></i><i style="width:15%;background:#85858b"></i><i style="width:8%;background:#5e5e64"></i></div>
+  <div class="lg3"><span style="--c:var(--accent)">App</span><span style="--c:#85858b">Wired</span><span style="--c:#5e5e64">Compressed</span></div>
   <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;font-weight:600;color:rgba(255,255,255,.55)"><span style="display:flex;align-items:center;gap:6px">${ic('hard-drive', 'width:13px;height:13px')}Disk</span><span>233 GB free</span></div>
   <div class="segbar"><i style="width:52%;background:#4c8dff"></i></div>
   <div style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:650;margin-top:8px">${ic('battery-medium', 'width:16px;height:16px;color:#34c759')}82% <span class="p-s" style="font-size:11px">4h 35m left</span></div></div>`;
@@ -331,7 +319,7 @@ async function sHome(ok) {
   await sleep(950); if (!ok()) return;
   islSet('tabs');
   let w = 38; every(() => { w = w >= 100 ? 0 : w + .7; $('#pMusic').style.width = w + '%'; }, 250);
-  let m = 14 * 60; every(() => { m--; $('#pNext').textContent = `IN ${Math.ceil(m / 60)}M`; }, 1000);
+  let m = 14 * 60; every(() => { m--; $('#pNext').textContent = `In ${Math.ceil(m / 60)} min`; }, 1000);
   await sleep(1300); if (!ok()) return;
   cur(470, 210);
 }
@@ -356,9 +344,9 @@ async function sVoice(ok) {
   setWave(iWave, false); islSet('copied');
   await sleep(700); if (!ok()) return;
   $('#dSay').classList.remove('on');
-  await click();
+  await click(); if (!ok()) return;
   const keys = $('#dKeys'); keys.innerHTML = '<b>⌘</b><b>V</b>'; keys.classList.add('on');
-  await sleep(500); if (!ok()) return;
+  await sleep(500); if (!ok()) { keys.classList.remove('on'); return; }
   body.textContent = words.join(' ');
   body.classList.remove('flash'); void body.offsetWidth; body.classList.add('flash');
   await sleep(500); keys.classList.remove('on');
@@ -430,7 +418,7 @@ async function sShelf(ok) {
   const fx = 310 + 130 + 18 + 2 * (82 + 16) + 10, fy = 330 + 36 + 18;
   cur(fx + 30, fy + 30);
   await sleep(1000); if (!ok()) return;
-  await click();
+  await click(); if (!ok()) return;
   fly.style.transition = 'none'; fly.style.left = fx + 'px'; fly.style.top = fy + 'px'; fly.style.transform = 'none';
   void fly.offsetWidth; fly.style.transition = ''; fly.style.opacity = 1;
   file.style.opacity = .35;
@@ -444,7 +432,7 @@ async function sShelf(ok) {
   await sleep(900); if (!ok()) return;
   cur(895, 150);
   await sleep(950); if (!ok()) return;
-  await click(); $('#pAirdrop').classList.add('hot');
+  await click(); if (ok()) $('#pAirdrop').classList.add('hot');
 }
 function sSystem(ok) {
   resetDesk(); wins('wTerm'); tabSet('system'); islSet('tabs'); cur(1000, 640);
@@ -513,44 +501,11 @@ $('#watch').addEventListener('click', () => { setPlaying(true); setTimeout(() =>
 onView(device, () => { if (!demoVisible) { demoVisible = true; go(ti); } }, () => { demoVisible = false; clearTimeout(tTimer); }, .25);
 tabSet('home');
 
-/* feature strip: pick one to see it in the demo */
-const FEATS = [
-  ['Voice typing', 'mic', '#b8abff', 'voice'], ['Meeting notes', 'audio-lines', '#5ad1cc', 'meetings'], ['Teleprompter', 'scroll-text', '#ffb340', 'prompt'],
-  ['Focus blocker', 'sprout', '#34c759', 'grove'], ['AI usage limits', 'gauge', '#e8916f', 'usage'], ['File shelf and AirDrop', 'inbox', '#4c8dff', 'shelf'],
-  ['System monitor', 'cpu', '#34c759', 'system'], ['Clipboard history', 'clipboard', '#b8abff', 'tab:clipboard'],
-  ['Hindi, Bengali and English', 'languages', '#ff6fae', '#voice'], ['Calendar with Join', 'calendar', '#ffb340', 'home'], ['Music controls', 'music', '#ff6fae', '#t-music'],
-  ['Todos', 'list-checks', '#4c8dff', 'tab:todos'], ['Timer', 'timer', '#ffb340', '#t-timer'], ['Launcher', 'layout-grid', '#ff9f5a', '#t-you'],
-  ['Camera mirror', 'camera', '#5ad1cc', '#t-you'], ['Per-app volume', 'volume', '#b8abff', '#t-you'], ['AI clean-up', 'file-text', '#ff9cc6', '#voice'],
-];
-const pill = ([n, i, c, g]) => `<button class="mp" data-go="${g}" style="--c:${c}"><i>${ic(i)}</i>${n}</button>`;
-const half = Math.ceil(FEATS.length / 2), rowA = FEATS.slice(0, half), rowB = FEATS.slice(half);
-$('#marquee').innerHTML = [rowA, rowB].map((r, k) => `<div class="mtrack${k ? ' rev' : ''}">${r.map(pill).join('')}${r.map(pill).join('')}</div>`).join('');
-$$('#marquee [data-go]').forEach(b => b.addEventListener('click', () => {
-  const g = b.dataset.go;
-  if (g.startsWith('#')) { $(g).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); return; }
-  $('#demo').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-  setTimeout(() => {
-    if (g.startsWith('tab:')) return openTab(g.slice(4));
-    const i = TOUR.findIndex(s => s.t === g);
-    if (!playing) setPlaying(true);
-    go(i < 0 ? 0 : i);
-  }, reduce ? 0 : 450);
-}));
-
-/* scrolling: the screen tilts back as it rises, the light drifts, and the bar fills */
-const glow = $('.glow');
+/* scrolling: the nav turns solid once the page moves */
 let scrollQueued = false;
 function onScroll() {
   scrollQueued = false;
   nav.classList.toggle('solid', scrollY > 8 || sheet.classList.contains('open'));
-  const max = document.documentElement.scrollHeight - innerHeight;
-  nav.style.setProperty('--sp', max > 0 ? (scrollY / max).toFixed(4) : 0);
-  if (reduce) return;
-  if (scrollY < 1600) glow.style.setProperty('--gy', scrollY * .35 + 'px');
-  const r = device.getBoundingClientRect();
-  const p = clamp(1 - (r.top - innerHeight * .1) / (innerHeight * .75), 0, 1), e = 1 - Math.pow(1 - p, 3);
-  device.style.setProperty('--tilt', (16 * (1 - e)).toFixed(2) + 'deg');
-  device.style.setProperty('--zoom', (.93 + .07 * e).toFixed(3));
 }
 addEventListener('scroll', () => { if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(onScroll); } }, { passive: true });
 onScroll();
@@ -580,16 +535,25 @@ function renderHeard() {
   const fin = Math.max(0, nHeard - 2);
   heard.innerHTML = esc(vWords.slice(0, fin).join(' ')) + (nHeard > fin ? ' <span class="v">' + esc(vWords.slice(fin, nHeard).join(' ')) + '</span>' : '');
 }
+let talkRun = 0;
+// Stops whatever the demo is doing, typing or pasting, so a new choice takes over at once.
+function abortTalk() {
+  talkRun++; holding = false;
+  clearTimeout(vTimer); clearInterval(vClock); setWave(vWave, false);
+  key.classList.remove('down'); paste.classList.remove('on'); vMiniState('idle');
+}
 function startTalk() {
-  if (holding) return;
+  if (holding) abortTalk();
+  const run = ++talkRun;
   holding = true; nHeard = 0; heard.innerHTML = '';
   key.classList.add('down');
   const t0 = performance.now();
   $('#vT').textContent = '0:00';
   vMiniState('rec'); setWave(vWave, true);
+  clearInterval(vClock);
   vClock = setInterval(() => ($('#vT').textContent = fmt((performance.now() - t0) / 1000)), 250);
   const step = () => {
-    if (!holding) return;
+    if (!holding || run !== talkRun) return;
     if (nHeard < vWords.length) { nHeard++; renderHeard(); }
     vTimer = setTimeout(step, 240 + Math.random() * 150);
   };
@@ -598,18 +562,19 @@ function startTalk() {
 async function stopTalk() {
   if (!holding) return;
   holding = false;
+  const run = talkRun, ok = () => run === talkRun;
   key.classList.remove('down'); clearTimeout(vTimer); clearInterval(vClock); setWave(vWave, false);
   if (nHeard === 0) { vMiniState('idle'); heard.textContent = 'Hold a little longer, and talk.'; return; }
   const said = vWords.slice(0, nHeard).join(' ');
   heard.textContent = said;
   vMiniState('copied');
-  await sleep(650); paste.classList.add('on');
-  await sleep(550);
+  await sleep(650); if (!ok()) return; paste.classList.add('on');
+  await sleep(550); if (!ok()) return;
   mBody.textContent = said;
   mBody.classList.remove('flash'); void mBody.offsetWidth; mBody.classList.add('flash');
-  await sleep(450); paste.classList.remove('on');
+  await sleep(450); if (!ok()) return; paste.classList.remove('on');
   await sleep(900);
-  if (!holding) vMiniState('idle');
+  if (ok() && !holding) vMiniState('idle');
 }
 async function autoTalk() {
   const run = ++autoRun;
@@ -626,7 +591,8 @@ key.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') 
 key.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') stopTalk(); });
 addEventListener('keydown', e => { if (e.key === 'Alt' && voiceVisible && !e.repeat) { e.preventDefault(); autoRun++; startTalk(); } });
 addEventListener('keyup', e => { if (e.key === 'Alt' && holding) stopTalk(); });
-$$('#samples button').forEach((b, i) => b.addEventListener('click', () => { if (holding) return; pickSample(i); autoTalk(); }));
+// Picking another language takes over straight away, even mid-sentence.
+$$('#samples button').forEach((b, i) => b.addEventListener('click', () => { autoRun++; abortTalk(); pickSample(i); autoTalk(); }));
 pickSample(0);
 onView($('.vgrid'), () => { voiceVisible = true; if (!voiceSeen) { voiceSeen = true; autoTalk(); } },
   () => { voiceVisible = false; autoRun++; if (holding) stopTalk(); }, .45);
@@ -691,6 +657,7 @@ async function typeInto(el, text, ms, ok) {
 async function meeting(run) {
   const ok = () => run === meetRun;
   clearInterval(meetClock);
+  $$('#callScr .ct').forEach(t => t.classList.remove('talk'));
   panel.classList.remove('sum'); linesEl.innerHTML = '';
   $('#pClock').textContent = '0:00'; $('#cMiniClock').textContent = '0:00';
   $('#askQ').textContent = ''; $('#askA').textContent = '';
@@ -716,7 +683,7 @@ async function meeting(run) {
     tile.classList.add('talk');
     const el = document.createElement('div');
     el.className = 'line';
-    el.innerHTML = `<div class="who ${L.who}">${L.who === 'them' ? 'THEM' : 'ME'}</div><div class="txt"></div>`;
+    el.innerHTML = `<div class="who ${L.who}">${L.who === 'them' ? 'Them' : 'Me'}</div><div class="txt"></div>`;
     linesEl.appendChild(el);
     requestAnimationFrame(() => el.classList.add('in'));
     const txt = el.querySelector('.txt'), words = (L.live || L.text).split(' ');
@@ -846,7 +813,7 @@ setTrack(0, true); setPlayingM(true);
 const nStart = Date.now();
 setInterval(() => {
   const left = Math.max(0, 14 * 60 - (Date.now() - nStart) / 1000);
-  $('#nIn').textContent = left > 0 ? `IN ${Math.floor(left / 60)}M ${String(Math.floor(left % 60)).padStart(2, '0')}S` : 'NOW';
+  $('#nIn').textContent = left > 0 ? `In ${Math.floor(left / 60)}m ${String(Math.floor(left % 60)).padStart(2, '0')}s` : 'Now';
 }, 1000);
 
 // Clipboard
@@ -880,7 +847,7 @@ setInterval(() => {
 }, 1000);
 
 // Accent colours
-const accents = [['#8b7bff', '#b8abff'], ['#ff6fae', '#ffadd0'], ['#34c759', '#86e6a0'], ['#ffb340', '#ffd28a'], ['#3fb5ff', '#9bd8ff'], ['#ff5b5b', '#ff9e9e']];
+const accents = [['#f9a06c', '#f9a06c'], ['#7d7aff', '#7d7aff'], ['#409cff', '#409cff'], ['#da8fff', '#da8fff'], ['#ff6482', '#ff6482'], ['#30db5b', '#30db5b']];
 const accEl = $('#accents');
 accEl.innerHTML = accents.map(([c], i) => `<button class="accent-dot${i ? '' : ' cur'}" style="background:${c}" aria-label="Accent colour ${i + 1}"></button>`).join('');
 $$('button', accEl).forEach((b, i) => b.addEventListener('click', () => {
@@ -889,32 +856,82 @@ $$('button', accEl).forEach((b, i) => b.addEventListener('click', () => {
   $$('button', accEl).forEach(x => x.classList.toggle('cur', x === b));
 }));
 
-/* ================= PRIVACY ================= */
-const sat = $('#sat');
+/* ================= PRIVACY: everything flows into the Mac, nothing flows out ================= */
+const sat = $('#sat'), orbit = sat.parentElement, wires = $('#wires'), macEl = $('.orbit .mac');
 const satItems = ['Your voice', 'Meetings', 'Clipboard', 'Files', 'Scripts', 'Focus', 'Todos'];
 sat.innerHTML = satItems.map(t => `<span>${t}</span>`).join('');
-let satSpin = 0, satOn = false, satLast = 0;
 function placeSats() {
-  const o = sat.parentElement, R = Math.min(o.clientWidth * .4, o.clientHeight * .4);
+  const R = Math.min(orbit.clientWidth * .4, orbit.clientHeight * .4);
   [...sat.children].forEach((s, i) => {
-    const a = i / satItems.length * Math.PI * 2 - Math.PI / 2 + satSpin;
+    const a = i / satItems.length * Math.PI * 2 - Math.PI / 2;
     s.style.setProperty('--x', Math.cos(a) * R + 'px'); s.style.setProperty('--y', Math.sin(a) * R * .82 + 'px');
   });
+  // A hairline from each label into the Mac.
+  const o = orbit.getBoundingClientRect(), m = macEl.getBoundingClientRect();
+  const mx = m.left - o.left + m.width / 2, my = m.top - o.top + m.height / 2;
+  wires.setAttribute('viewBox', `0 0 ${o.width.toFixed(1)} ${o.height.toFixed(1)}`);
+  wires.innerHTML = [...sat.children].map(s => {
+    const r = s.getBoundingClientRect(), x = r.left - o.left + r.width / 2, y = r.top - o.top + r.height / 2;
+    const qx = (x + mx) / 2 + (my - y) * .18, qy = (y + my) / 2 + (x - mx) * .18;
+    return `<path class="w" d="M${x.toFixed(1)} ${y.toFixed(1)}Q${qx.toFixed(1)} ${qy.toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}"/>`;
+  }).join('') + '<circle class="pk" r="3.5" cx="-20" cy="-20"/>';
 }
-function satFrame(t) {
-  if (!satOn) return;
-  if (!reduce) satSpin += Math.min(50, t - (satLast || t)) / 1000 * .16;
-  satLast = t; placeSats(); requestAnimationFrame(satFrame);
+let pkOn = false, pkI = 0, kept = 0;
+async function packets() {
+  while (pkOn) {
+    const i = pkI++ % satItems.length, path = $$('.w', wires)[i], lab = sat.children[i];
+    if (!path) { await sleep(400); continue; }
+    lab.classList.add('on'); path.classList.add('on');
+    const L = path.getTotalLength(), t0 = performance.now(), D = 900;
+    await new Promise(res => {
+      const f = t => {
+        const p = Math.min(1, (t - t0) / D), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        const pt = path.getPointAtLength(L * e), c = $('.pk', wires);
+        if (c) { c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y); }
+        if (p < 1 && pkOn) requestAnimationFrame(f); else res();
+      };
+      requestAnimationFrame(f);
+    });
+    lab.classList.remove('on'); path.classList.remove('on');
+    const c = $('.pk', wires); if (c) c.setAttribute('cx', -20);
+    if (!pkOn) break;
+    macEl.classList.remove('got'); void macEl.offsetWidth; macEl.classList.add('got');
+    $('#kept').textContent = ++kept;
+    await sleep(650);
+  }
 }
 placeSats();
 addEventListener('resize', placeSats);
-onView(sat.parentElement, () => { if (!satOn) { satOn = true; satLast = 0; requestAnimationFrame(satFrame); } }, () => (satOn = false), .2);
+onView(orbit, () => { placeSats(); if (!pkOn && !reduce) { pkOn = true; packets(); } }, () => (pkOn = false), .3);
 
-/* ================= GALLERY ================= */
-const gal = $('#gal');
-const galStep = d => gal.scrollBy({ left: d * (gal.querySelector('figure').offsetWidth + 16), behavior: 'smooth' });
-$('#gPrev').addEventListener('click', () => galStep(-1));
-$('#gNext').addEventListener('click', () => galStep(1));
+/* ================= GALLERY: real screenshots, one at a time ================= */
+const shotsEl = $('#shots'), shotFigs = $$('.shot', shotsEl), shotTabs = $$('.stabs button', shotsEl), stage2 = $('#stage2');
+let shotI = 0, shotT = 0, shotsVisible = false, shotsHover = false;
+function showShot(i, user) {
+  shotI = (i + shotFigs.length) % shotFigs.length;
+  shotFigs.forEach((f, j) => f.classList.toggle('on', j === shotI));
+  shotTabs.forEach((b, j) => { b.classList.remove('cur'); b.setAttribute('aria-selected', j === shotI); });
+  void shotsEl.offsetWidth;
+  shotTabs[shotI].classList.add('cur');
+  const strip = shotTabs[shotI].parentElement;
+  if (user && strip.scrollWidth > strip.clientWidth) strip.scrollTo({ left: shotTabs[shotI].offsetLeft - 16, behavior: reduce ? 'auto' : 'smooth' });
+  clearTimeout(shotT);
+  const auto = shotsVisible && !shotsHover && !reduce;
+  shotsEl.classList.toggle('play', auto);
+  if (auto) shotT = setTimeout(() => showShot(shotI + 1), 5000);
+}
+shotTabs.forEach((b, j) => b.addEventListener('click', () => showShot(j, true)));
+shotsEl.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { shotsHover = true; shotsEl.classList.add('held'); clearTimeout(shotT); } });
+shotsEl.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { shotsHover = false; shotsEl.classList.remove('held'); showShot(shotI); } });
+stage2.addEventListener('keydown', e => { if (e.key === 'ArrowRight') showShot(shotI + 1, true); if (e.key === 'ArrowLeft') showShot(shotI - 1, true); });
+let swipeX = null;
+stage2.addEventListener('touchstart', e => (swipeX = e.touches[0].clientX), { passive: true });
+stage2.addEventListener('touchend', e => {
+  if (swipeX === null) return;
+  const dx = e.changedTouches[0].clientX - swipeX; swipeX = null;
+  if (Math.abs(dx) > 40) showShot(shotI + (dx < 0 ? 1 : -1), true);
+});
+onView(shotsEl, () => { if (!shotsVisible) { shotsVisible = true; showShot(shotI); } }, () => { shotsVisible = false; clearTimeout(shotT); shotsEl.classList.remove('play'); }, .35);
 
 /* ================= PRICING ================= */
 const seg = $('#seg'), knob = $('#knob');
@@ -926,17 +943,35 @@ function setBill(b, quiet) {
   knob.style.width = btn.offsetWidth + 'px';
   knob.style.transform = `translateX(${btn.offsetLeft - 4}px)`;
   if (quiet) return;
-  $$('.plan [data-m]').forEach(el => {
-    if (el.tagName === 'B') {
-      el.classList.add('swap');
-      setTimeout(() => { el.textContent = el.dataset[b]; el.classList.remove('swap'); }, 200);
-    } else el.textContent = el.dataset[b];
-  });
+  $$('.plan [data-m]').forEach(el => (el.tagName === 'B' ? tweenPrice(el, el.dataset[b]) : (el.textContent = el.dataset[b])));
 }
+function tweenPrice(el, to) {
+  const num = s => parseFloat(String(s).replace(/[^0-9.]/g, '')) || 0;
+  const from = num(el.textContent), end = num(to), t0 = performance.now(), D = 450;
+  if (reduce) { el.textContent = to; return; }
+  const f = t => {
+    const p = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = p < 1 ? '$' + (from + (end - from) * e).toFixed(2) : to;
+    if (p < 1) requestAnimationFrame(f);
+  };
+  requestAnimationFrame(f);
+}
+// Each card's notch opens to show what the plan adds; Pro's is listening.
+const pnWave = makeWave($('#pnWave'), 9);
+let pnClock = 0;
+onView($('.plans'), () => {
+  $$('.plan>.pn').forEach((n, i) => setTimeout(() => n.classList.add('open'), reduce ? 0 : 150 + i * 160));
+  if (!reduce) setWave(pnWave, true);
+  if (!pnClock) { let s = 12; pnClock = setInterval(() => ($('#pnT').textContent = fmt(++s)), 1000); }
+}, () => { setWave(pnWave, false); clearInterval(pnClock); pnClock = 0; }, .2);
 $$('button', seg).forEach(b => b.addEventListener('click', () => setBill(b.dataset.b)));
 setBill('m', true);
 addEventListener('resize', () => setBill(bill, true));
 if (document.fonts) document.fonts.ready.then(() => setBill(bill, true));
+
+/* ================= works with ================= */
+$$('.ltrack').forEach(t => { const copy = t.querySelector('.lset').cloneNode(true); copy.setAttribute('aria-hidden', 'true'); t.appendChild(copy); });
+onView($('#logos'), () => $('#logos').classList.add('run'), () => $('#logos').classList.remove('run'), 0);
 
 /* ================= sticky button on phones ================= */
 const mcta = $('#mcta'), heroCtas = $('.hero .ctas'), finalCard = $('.fcard');
